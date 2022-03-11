@@ -69,7 +69,7 @@ public:
     // TODO-E : Override evaluate, and implement it
 };
 
-class ExpFunction
+/*class ExpFunction
     : public Function
 {
 public:
@@ -88,9 +88,9 @@ public:
         double v = getArg()->evaluate(bindings);
         return exp(v);
     }
-};
+};*/
 
-class SqrtFunction
+/*class SqrtFunction
     : public Function
 {
 public:
@@ -108,6 +108,28 @@ public:
     {
         double v = getArg()->evaluate(bindings);
         return sqrt(v);
+    }
+};*/
+
+class IntFunction
+    : public Function
+{
+public:
+    IntFunction(ExpressionPtr _arg)
+        : Function(_arg)
+    {
+    
+    }
+    virtual int translate(
+        const std::map<std::string, double> &bindings, std::string dest_reg) const override
+    {
+        std::cout << "addiu $sp $sp -8" << std::endl;
+        std::cout << "sw $fp 4($sp)" << std::endl;
+        std::cout << "move $fp $sp" << std::endl;
+        double v = getArg()->evaluate(bindings);
+        std::cout << "move $sp $fp" << std::endl;
+        std::cout << "lw $fp 4($sp)" << std::endl;
+        std::cout << "addiu $sp $sp 8" << std::endl;
     }
 };
 

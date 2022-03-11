@@ -52,7 +52,7 @@ ROOT : EXPR { g_root = $1; }
 
 
 
-EXPR :  EXPR T_PLUS TERM { $$ = new AddOperator ($1, $3); }
+ADD_SUB_EXPR :  EXPR T_PLUS TERM { $$ = new AddOperator ($1, $3); }
     |   EXPR T_MINUS TERM {$$ = new SubOperator ($1, $3);}
     | TERM           { $$ = $1; }
 
@@ -65,7 +65,7 @@ UNARY : T_MINUS FACTOR { $$ = new NegOperator($2); }
 
 FACTOR : T_NUMBER     { $$ = new Number( $1 ); }
        | T_VARIABLE  { $$ = new Variable (*$1); }
-       | T_LBRACKET EXPR T_RBRACKET { $$ = $2; }p
+       | T_LBRACKET ADD_SUB_EXPR T_RBRACKET { $$ = $2; }p
 
 
 type_specifier

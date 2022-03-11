@@ -3,7 +3,6 @@
 
 #include <string>
 #include <iostream>
-#include <math.h>
 
 class Operator
     : public Expression
@@ -37,7 +36,8 @@ public:
         return right;
     }
 
-    virtual void print(std::ostream &dst) const override
+
+    /*virtual void print(std::ostream &dst) const override
     {
         dst << "( ";
         left->print(dst);
@@ -46,133 +46,75 @@ public:
         dst << " ";
         right->print(dst);
         dst << " )";
+    }*/
+    
+};
+
+class AddOperator : public Operator{
+/*protected:
+        virtual const char *getOpcode() const override
+        {return "+";}*/
+public:
+    AddOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+    virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
+    {
+        double left = getLeft()->translate(bindings, "$3");
+        double righ = getRight()->translate (bindings, "$4");
+        std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;
     }
 };
 
-class AddOperator
-    : public Operator
-{
-protected:
-    virtual const char *getOpcode() const override
-    {
-        return "+";
-    }
-
+class SubOperator : public Operator{
 public:
-    AddOperator(ExpressionPtr _left, ExpressionPtr _right)
-        : Operator(_left, _right)
+    SubOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+    virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
     {
-    }
-
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
-    {
-        // TODO-C : Run bin/eval_expr with something like 5+a, where a=10, to make sure you understand how this works
-        double vl = getLeft()->evaluate(bindings);
-        double vr = getRight()->evaluate(bindings);
-        return vl + vr;
+        double left = getLeft()->translate(bindings, "$3");
+        double righ = getRight()->translate (bindings, "$4");
+        std::cout << "subiu" << dest_reg << " $3 $4" << std::endl;
     }
 };
 
-class SubOperator
-    : public Operator
-{
-protected:
-    virtual const char *getOpcode() const override
-    {
-        return "-";
-    }
-
+class MulOperator : public Operator{
 public:
-    SubOperator(ExpressionPtr _left, ExpressionPtr _right)
-        : Operator(_left, _right)
+    MulOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+        virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
     {
-    }
-
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
-    {
-        double vl = getLeft()->evaluate(bindings);
-        double vr = getRight()->evaluate(bindings);
-        return vl - vr;
-        // TODO-D : Implement this, based on AddOperator::evaluate
-        // throw std::runtime_error("MulOperator::evaluate is not implemented.");
+        double left = getLeft()->translate(bindings, "$3");
+        double righ = getRight()->translate (bindings, "$4");
+        std::cout << "multu" << dest_reg << " $3 $4" << std::endl;
     }
 };
 
-class MulOperator
-    : public Operator
-{
-protected:
-    virtual const char *getOpcode() const override
-    {
-        return "*";
-    }
-
+class DivOperator : public Operator{
 public:
-    MulOperator(ExpressionPtr _left, ExpressionPtr _right)
-        : Operator(_left, _right)
+    DivOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+        virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
     {
-    }
-
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
-    {
-        double vl = getLeft()->evaluate(bindings);
-        double vr = getRight()->evaluate(bindings);
-        return vl * vr;
-        // throw std::runtime_error("MulOperator::evaluate is not implemented.");
+        double left = getLeft()->translate(bindings, "$3");
+        double righ = getRight()->translate (bindings, "$4");
+        std::cout << "divu" << dest_reg << " $3 $4" << std::endl;
     }
 };
 
-class DivOperator
-    : public Operator
-{
-protected:
-    virtual const char *getOpcode() const override
-    {
-        return "/";
-    }
-
+class LogicalAndOperator : public Operator{
 public:
-    DivOperator(ExpressionPtr _left, ExpressionPtr _right)
-        : Operator(_left, _right)
-    {
-    }
-
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
-    {
-        double vl = getLeft()->evaluate(bindings);
-        double vr = getRight()->evaluate(bindings);
-        return vl / vr;
-        // throw std::runtime_error("DivOperator::evaluate is not implemented.");
-    }
+    LogicalAndOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
 };
 
-class ExpOperator
-    : public Operator
-{
-protected:
-    virtual const char *getOpcode() const override
-    {
-        return "^";
-    }
-
+class LogicalOrOperator : public Operator{
 public:
-    ExpOperator(ExpressionPtr _left, ExpressionPtr _right)
-        : Operator(_left, _right)
-    {
-    }
+    LogicalOrOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+};
 
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
-    {
-        double vl = getLeft()->evaluate(bindings);
-        double vr = getRight()->evaluate(bindings);
-        return std::pow(vl, vr);
-        throw std::runtime_error("ExpOperator::evaluate is not implemented.");
-    }
+class LogicalRightShiftOperator : public Operator{
+public:
+    LogicalRightShiftOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+};
+
+class LogicalLeftShiftOperator : public Operator{
+public:
+    LogicalLeftShiftOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
 };
 
 #endif
