@@ -4,6 +4,8 @@
 #include "ast_expression.hpp"
 
 #include <cmath>
+#include <string>
+#include <iostream>
 
 class Function
     : public Expression
