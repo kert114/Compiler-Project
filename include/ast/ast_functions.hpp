@@ -121,15 +121,15 @@ public:
     
     }
     virtual int translate(
-        const std::map<std::string, double> &bindings, std::string dest_reg) const override
+        const std::map<std::string, double> &bindings, std::string dest_reg, int sp, int offset) const override
     {
-        std::cout << "addiu $sp $sp -8" << std::endl;//stack size changes but is multiple of 8, fp is always 4 less - also sp is 8 per mips instruction (ish)
-        std::cout << "sw $fp 4($sp)" << std::endl;
+        std::cout << "addiu $sp $sp "<<-sp<< std::endl;//stack size changes but is multiple of 8, fp is always 4 less - also sp is 8 per mips instruction (ish)
+        std::cout << "sw $fp "<<offset<<"($sp)" << std::endl;
         std::cout << "move $fp $sp" << std::endl;
         double v = getArg()->evaluate(bindings);
         std::cout << "move $sp $fp" << std::endl;
-        std::cout << "lw $fp 4($sp)" << std::endl;
-        std::cout << "addiu $sp $sp 8" << std::endl;
+        std::cout << "lw $fp "<<offset<<"($sp)" << std::endl;
+        std::cout << "addiu $sp $sp "<<sp<< std::endl;
     }
 };
 
