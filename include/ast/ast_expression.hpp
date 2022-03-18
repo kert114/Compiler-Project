@@ -1,6 +1,8 @@
 #ifndef ast_expression_hpp
 #define ast_expression_hpp
 
+#include "ast_context.hpp"
+
 #include <string>
 #include <iostream>
 #include <map>

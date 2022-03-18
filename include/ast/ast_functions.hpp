@@ -39,79 +39,15 @@ public:
         dst << " )";
     }
 
-    virtual double evaluate(
-        Context& context) const override
+    virtual int translate(
+        Context& context)
     {
         // NOTE : This should be implemented by the inheriting function nodes, e.g. LogFunction
         throw std::runtime_error("FunctionOperator::evaluate is not implemented.");
     }
 };
 
-class LogFunction
-    : public Function
-{
-public:
-    LogFunction(ExpressionPtr _arg)
-        : Function(_arg)
-    {
-    }
 
-    virtual const char *getFunction() const
-    {
-        return "log";
-    }
-
-    virtual double evaluate(
-        Context& context) const override
-    {
-        double v = getArg()->evaluate(context);
-        return log(v);
-    }
-
-    // TODO-E : Override evaluate, and implement it
-};
-
-/*class ExpFunction
-    : public Function
-{
-public:
-    ExpFunction(ExpressionPtr _arg)
-        : Function(_arg)
-    {
-    }
-
-    virtual const char *getFunction() const
-    {
-        return "exp";
-    }
-    virtual double evaluate(
-        const std::map<std::string, double> &context) const override
-    {
-        double v = getArg()->evaluate(context);
-        return exp(v);
-    }
-};*/
-
-/*class SqrtFunction
-    : public Function
-{
-public:
-    SqrtFunction(ExpressionPtr _arg)
-        : Function(_arg)
-    {
-    }
-
-    virtual const char *getFunction() const
-    {
-        return "sqrt";
-    }
-    virtual double evaluate(
-        const std::map<std::string, double> &context) const override
-    {
-        double v = getArg()->evaluate(context);
-        return sqrt(v);
-    }
-};*/
 
 class IntFunction
     : public Function
