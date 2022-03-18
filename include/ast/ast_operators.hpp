@@ -57,10 +57,10 @@ class AddOperator : public Operator{
         {return "+";}*/
 public:
     AddOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-    virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
+    virtual int translate(Context& context, const std::string dest_reg) 
     {
-        double left = getLeft()->translate(bindings, "$3");
-        double righ = getRight()->translate (bindings, "$4");
+        double left = getLeft()->translate(context, "$3");
+        double righ = getRight()->translate (context, "$4");
         std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;
     }
 };
@@ -68,10 +68,10 @@ public:
 class SubOperator : public Operator{
 public:
     SubOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-    virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
+    virtual int translate(Context& context, const std::string dest_reg) 
     {
-        double left = getLeft()->translate(bindings, "$3");
-        double righ = getRight()->translate (bindings, "$4");
+        double left = getLeft()->translate(context, "$3");
+        double righ = getRight()->translate (context, "$4");
         std::cout << "subiu" << dest_reg << " $3 $4" << std::endl;
     }
 };
@@ -79,10 +79,10 @@ public:
 class MulOperator : public Operator{
 public:
     MulOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-        virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
+        virtual int translate(Context& context, const std::string dest_reg) 
     {
-        double left = getLeft()->translate(bindings, "$3");
-        double righ = getRight()->translate (bindings, "$4");
+        double left = getLeft()->translate(context, "$3");
+        double righ = getRight()->translate (context, "$4");
         std::cout << "multu" << dest_reg << " $3 $4" << std::endl;
     }
 };
@@ -90,10 +90,10 @@ public:
 class DivOperator : public Operator{
 public:
     DivOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-        virtual int translate(const std::map<std::string, double> &bindings, const std::string dest_reg)const override 
+        virtual int translate(Context& context, const std::string dest_reg) 
     {
-        double left = getLeft()->translate(bindings, "$3");
-        double righ = getRight()->translate (bindings, "$4");
+        double left = getLeft()->translate(context, "$3");
+        double righ = getRight()->translate (context, "$4");
         std::cout << "divu" << dest_reg << " $3 $4" << std::endl;
     }
 };

@@ -40,7 +40,7 @@ public:
     }
 
     virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
+        Context& context) const override
     {
         // NOTE : This should be implemented by the inheriting function nodes, e.g. LogFunction
         throw std::runtime_error("FunctionOperator::evaluate is not implemented.");
@@ -62,9 +62,9 @@ public:
     }
 
     virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
+        Context& context) const override
     {
-        double v = getArg()->evaluate(bindings);
+        double v = getArg()->evaluate(context);
         return log(v);
     }
 
@@ -85,9 +85,9 @@ public:
         return "exp";
     }
     virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
+        const std::map<std::string, double> &context) const override
     {
-        double v = getArg()->evaluate(bindings);
+        double v = getArg()->evaluate(context);
         return exp(v);
     }
 };*/
@@ -106,9 +106,9 @@ public:
         return "sqrt";
     }
     virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
+        const std::map<std::string, double> &context) const override
     {
-        double v = getArg()->evaluate(bindings);
+        double v = getArg()->evaluate(context);
         return sqrt(v);
     }
 };*/
@@ -123,15 +123,15 @@ public:
     
     }
     virtual int translate(
-        const std::map<std::string, double> &bindings, std::string dest_reg, int sp, int offset) const override
+        Context& context, std::string dest_reg, int sp, int offset)
     {
         std::cout << "addiu $sp $sp "<<-sp<< std::endl;//stack size changes but is multiple of 8, fp is always 4 less - also sp is 8 per mips instruction (ish)
         std::cout << "sw $fp "<<offset<<"($sp)" << std::endl;
         std::cout << "move $fp $sp" << std::endl;
-        double v = getArg()->evaluate(bindings);
+        /*
         std::cout << "move $sp $fp" << std::endl;
         std::cout << "lw $fp "<<offset<<"($sp)" << std::endl;
-        std::cout << "addiu $sp $sp "<<sp<< std::endl;
+        std::cout << "addiu $sp $sp "<<sp<< std::endl;*/
     }
 };
 

@@ -22,11 +22,11 @@ public:
 
     //! Evaluate the tree using the given mapping of variables to numbers
     virtual double evaluate(
-        const std::map<std::string,double> &bindings
+        const std::map<std::string,double> &context
     ) const
     { throw std::runtime_error("Not implemented."); }
     virtual int translate(
-        const std::map<std::string,double> &bindings,
+        Context& context,
         const std::string dest_reg,
         int sp,
         int offset

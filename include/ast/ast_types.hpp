@@ -5,13 +5,23 @@
 #include <iostream>
 #include "ast_expression.hpp"
 
-class Types;
-    : public Expression
+enum type
 {
-public:
+    INT
+};
+
+class Types;
+{
+    private:
+        type type_of_variable;
 
 
-
-private:
-
+    public:
+        types(type _type_of_variable) : type_of_variable(_type_of_variable){}
 }
+
+
+
+
+
+

@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "ast_expression.hpp"
+#include "ast_context.hpp"
 
 class Variable
     : public Expression
@@ -27,23 +28,20 @@ public:
         dst << id;
     }
 
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
+    virtual double translate(
+        Context& context)
     {
-        // TODO-B : Run bin/eval_expr with a variable binding to make sure you understand how this works.
-        // If the binding does not exist, this will throw an error
-        return bindings.at(id);
     }
 };
 
-class Number
+class Integer
     : public Expression
 {
 private:
-    double value;
+    int value;
 
 public:
-    Number(double _value)
+    Integer(double _value)
         : value(_value)
     {
     }
@@ -58,11 +56,16 @@ public:
         dst << value;
     }
 
-    virtual double evaluate(
-        const std::map<std::string, double> &bindings) const override
+    virtual double translate(
+        Context& context, std::string dest)
     {
-        // TODO-A : Run bin/eval_expr with a numeric expression to make sure you understand how this works.
-        return value;
+        
+        int stack_pointer = context.get_stack_pointer();
+        std::string destination_register = "$2";
+
+        std::cout << "li " << dest << value << std::endl;
+        
+        context.store_register(destination_register, stack_pointer);
     }
 };
 

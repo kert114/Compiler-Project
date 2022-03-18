@@ -34,12 +34,12 @@
 // Types
 %token T_INT T_VOID
 // Vars
-%token T_NUMBER T_VARIABLE
+%token T_FLOAT T_VARIABLE
 
 /*----------------type--------------*/
 
 %type <expr> EXPR TERM UNARY FACTOR
-%type <number> T_NUMBER
+%type <number> T_FLOAT T_INTEGER
 %type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME 
 
 %start ROOT
@@ -52,8 +52,8 @@ ROOT : EXPR { g_root = $1; }
 
 
 
-ADD_SUB_EXPR :  EXPR T_PLUS TERM { $$ = new AddOperator ($1, $3); }
-    |   EXPR T_MINUS TERM {$$ = new SubOperator ($1, $3);}
+ADD_SUB_EXPR :  ADD_SUB_EXPR T_PLUS TERM { $$ = new AddOperator ($1, $3); }
+    |   ADD_SUB_EXPR T_MINUS TERM {$$ = new SubOperator ($1, $3);}
     | TERM           { $$ = $1; }
 
 TERM : TERM T_TIMES UNARY { $$ = new MulOperator ($1, $3); }
@@ -63,9 +63,15 @@ TERM : TERM T_TIMES UNARY { $$ = new MulOperator ($1, $3); }
 UNARY : T_MINUS FACTOR { $$ = new NegOperator($2); }
       | FACTOR        { $$ = $1; }
 
-FACTOR : T_NUMBER     { $$ = new Number( $1 ); }
+FACTOR : T_INTEGER     { $$ = new Integer( $1 ); }
        | T_VARIABLE  { $$ = new Variable (*$1); }
-       | T_LBRACKET ADD_SUB_EXPR T_RBRACKET { $$ = $2; }p
+       | T_LBRACKET ADD_SUB_EXPR T_RBRACKET { $$ = $2; }
+
+integer : T_INTEGER { $$ = new Integer( $1 ); }
+
+type : T_INT {$$ = new Types(INT); }
+
+
 
 
 type_specifier

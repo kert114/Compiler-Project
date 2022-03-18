@@ -3,7 +3,7 @@
 
 int main()
 {
-	std::cout << "f:" << std::endl;
+	/*std::cout << "f:" << std::endl;
 	std::cout << "PUSH0:" << std::endl;
 	std::cout << "addiu $sp, $sp, -44" << std::endl;
 	std::cout << "sw $ra, 40($sp)" << std::endl;
@@ -60,5 +60,5 @@ int main()
 	std::cout << "move $sp, $fp" << std::endl;
 	std::cout << "jr $ra" << std::endl;
 	std::cout << "nop" << std::endl;
-	std::cout << ".global f" << std::endl;
+	std::cout << ".global f" << std::endl;*/
 }
