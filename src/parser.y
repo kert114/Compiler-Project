@@ -22,25 +22,33 @@
 
 /*---------------token-------------*/
 // Arithmetic
-%token T_TIMES T_DIVIDE T_PLUS T_MINUS
+%token ASTERIX R_SLASH PLUS MINUS PERCENT LESS_THAN GREATER_THAN GREATER_OR_EQUAL LESS_OR_EQUAL EQUAL_TO NOT_EQUAL DECREMENT_OP INCREMENT_OP
 // Logical
 %token T_LOGICAL_AND T_LOGICAL_OR T_LOGICAL_RIGHT_SHIFT T_LOGICAL_LEFT_SHIFT
 // Brackets
-%token T_LBRACKET T_RBRACKET
+%token L_BRACKET R_BRACKET L_SQUIRLY R_SQUIRLY L_SQUARE R_SQUARE
 // Loops
-%token T_WHILE 
+%token T_WHILE T_FOR T_DO
 // IfElse
-%token T_IF T_ELSE 
+%token T_IF T_ELSE T_CASE T_SWITCH T_BREAK
 // Types
-%token T_INT T_VOID
+%token T_INT T_VOID T_DOUBLE T_CHAR T_LONG T_FLOAT T_SHORT T_ENUM T_SIZEOF T_CONTINUE T_DEFAULT T_STRUCT T_SIGNED T_UNSIGNED T_TYPEDEF T_VOLATILE T_RETURN
 // Vars
-%token T_FLOAT T_VARIABLE
+%token T_FLOAT_VAL T_VARIABLE_VAL T_VARIABLE T_INTEGER_VAL
+// Misc
+%token SEMI_COLON COMMA COLON DECIMAL AMPERSAND EXLAIMATION TILDA HAT UPRIGHT_SLASH QUESTION_MARK PTR_OP
+// Assign
+%token EQUAL RIGHT_ASSIGN LEFT_ASSIGN ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
+
+%token T_IDENTIFIER 
+
 
 /*----------------type--------------*/
 
-%type <expr> EXPR TERM UNARY FACTOR
+%type <expr> function_definition global_declaration declaration
 %type <number> T_FLOAT T_INTEGER
-%type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME 
+%type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME T_IDENTIFIER
+
 
 %start ROOT
 
@@ -51,27 +59,18 @@ ROOT : EXPR { g_root = $1; }
 
 
 
-
-ADD_SUB_EXPR :  ADD_SUB_EXPR T_PLUS TERM { $$ = new AddOperator ($1, $3); }
-    |   ADD_SUB_EXPR T_MINUS TERM {$$ = new SubOperator ($1, $3);}
-    | TERM           { $$ = $1; }
-
-TERM : TERM T_TIMES UNARY { $$ = new MulOperator ($1, $3); }
-    | TERM T_DIVIDE UNARY { $$ = new DivOperator ($1, $3); } 
-    | UNARY          { $$ = $1; }
-
-UNARY : T_MINUS FACTOR { $$ = new NegOperator($2); }
-      | FACTOR        { $$ = $1; }
-
-FACTOR : T_INTEGER     { $$ = new Integer( $1 ); }
-       | T_VARIABLE  { $$ = new Variable (*$1); }
-       | T_LBRACKET ADD_SUB_EXPR T_RBRACKET { $$ = $2; }
-
 integer : T_INTEGER { $$ = new Integer( $1 ); }
 
 type : T_INT {$$ = new Types(INT); }
 
 
+
+global_declaration : function_definition { $$ = $1; }
+                    | declaration { $$ = $1; }
+                    ;
+
+function_definition : TYPE T_IDENTIFIER T_LBRACKET PARAMETER_LIST T_RBRACKET COMPOUND_STATEMENT
+                    
 
 
 type_specifier

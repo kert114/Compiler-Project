@@ -10,16 +10,16 @@ enum type
     INT
 };
 
-class Types;
+class Types
 {
     private:
         type type_of_variable;
 
 
     public:
-        types(type _type_of_variable) : type_of_variable(_type_of_variable){}
-}
-
+        Types(type _type_of_variable) : type_of_variable(_type_of_variable){}
+};
+#endif
 
 
 
