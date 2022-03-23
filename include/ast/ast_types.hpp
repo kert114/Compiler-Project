@@ -7,7 +7,27 @@
 
 enum type
 {
-    INT
+	VOID,
+	INT,
+	FLOAT,
+	STRING,
+	CHAR,
+	DOUBLE,
+	UNSIGNED_INT,
+	NONE
+};
+
+class type_declaration
+{
+    private:
+        type variable_type;
+    
+    public:
+        type_declaration(type _variable_type) : variable_type(_variable_type) {}
+        type type_of_variable()
+        {
+            return variable_type;
+        }
 };
 
 class Types

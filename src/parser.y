@@ -45,43 +45,73 @@
 
 /*----------------type--------------*/
 
-%type <expr> function_definition global_declaration declaration
+%type <expr> function_definition external_declaration declaration type parameter_list compound_statement
+%type <expr> parameter_declaration primary_expression translation_unit type_specifier
+%type <expr> assignment_expression argument_expression_list declaration_specifiers
 %type <number> T_FLOAT T_INTEGER
+
 %type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME T_IDENTIFIER
 
 
-%start ROOT
+%start root
 
 %%
 
-ROOT : EXPR { g_root = $1; }
+root : translation_unit { g_root = $1; };
+
+translation_unit : external_declaration { $$ = $1; }
+                  | translation_unit external_declaration { $$ = new translation_unit_declaration ($1,$2)}
 
 
-
-
-integer : T_INTEGER { $$ = new Integer( $1 ); }
-
-type : T_INT {$$ = new Types(INT); }
-
-
-
-global_declaration : function_definition { $$ = $1; }
+external_declaration : function_definition { $$ = $1; }
                     | declaration { $$ = $1; }
-                    ;
-
-function_definition : TYPE T_IDENTIFIER T_LBRACKET PARAMETER_LIST T_RBRACKET COMPOUND_STATEMENT
                     
 
 
-type_specifier
-	: VOID
-	//| CHAR
-	| INT
-	//| FLOAT
-	//| DOUBLE
-	//| UNSIGNED
-	//| TYPE_NAME
-	;
+function_definition : type T_IDENTIFIER L_BRACKET /*parameter_list */ R_BRACKET compound_statement
+                    | { ( $$ = new function_declaration($1, *$2, /*$4, $6 */ $5); }
+                    ;
+
+argument_expression_list : assignment_expression {$$ = new }
+                          | argument_expression_list COMMA assignment_expression
+                          ;
+
+declaration : declaration_specifiers SEMI_COLON
+            | declaration_specifiers init_declarator_list SEMI_COLON
+
+
+              
+//parameter_list : parameter_declaration { $$ = new std::vector<}
+
+primary_expression : T_IDENTIFIER { $$ = new Identifier_declaration(*$1); };
+	                 /* | T_CONSTANT
+	                  | STRING_LITERAL
+	                  | '(' expression ')'*/
+                    ;
+	                  
+
+compound_statement : L_SQUIRLY R_SQUIRLY { $$ = new compound_statement_declaration(); }
+                    /*|	| '{' statement_list '}'
+	                      | '{' declaration_list '}'
+	                      | '{' declaration_list statement_list '}'
+	                      */
+                        
+
+
+
+type_specifier : T_INT {$$ = new type_declaration(INT); }
+                /*| VOID
+	                | CHAR
+	                | SHORT
+	                | LONG
+	                | FLOAT
+	                | DOUBLE
+	                | SIGNED
+	                | UNSIGNED
+	                | struct_or_union_specifier
+	                | enum_specifier
+	                | TYPE_NAME
+	                */
 
 %%
 

@@ -4,6 +4,10 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <stack>
+
+#include "ast_types.hpp"
+#include "ast_expression.hpp"
 
 /*struct registers
 {
@@ -26,9 +30,25 @@
   int allocate(); // Returns empty register, -1 if no registers are available (Helper function for context)
 };*/
 
+class variable
+{
+  private :
+    int variable_address;
+    type_declaration variable_type;
+
+};
+
+typedef std::map<std::string, variable*> type_mapping;
 
 class Context
 {
+  private :
+    int stack_pointer = 0;
+		int register_counter = 0;
+
+    std::stack<type_mapping*> context_scope_stack_tracker;
+		std::stack<int> context_scope_frame_pointer;
+
 	public:
 
 		// Trackers and counters
@@ -38,6 +58,13 @@ class Context
     std::map<std::string, std::string> label_variables;
 		std::map<std::string, std::string> label_declarations;
 
+    void expand_context_scope(){
+      
+    }
+
+    void reduce_context_scope(){
+
+    }
 
 		void allocate_stack()
 		{
@@ -54,6 +81,8 @@ class Context
 			}
 		}
 
+    
+
 		int get_stack_pointer() { return stack_pointer; }
 
     void store_register(std::string register_name, int offset)
@@ -61,5 +90,22 @@ class Context
 			std::cout<<"sw "<<register_name<<" "<<offset<<"($30)"<< std::endl;
 		}
 };
+
+class Node
+{
+	public:
+		virtual ~Node () 
+    {
+
+    }
+
+		virtual int translate(
+      Context& context) const 
+		{
+			std::cerr << "Ast_node.hpp: 'compile' not implemented" << std::endl;
+		}
+};
+
+typedef const Node* Node_Ptr;
 
 #endif

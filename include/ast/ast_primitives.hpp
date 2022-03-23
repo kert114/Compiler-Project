@@ -69,4 +69,14 @@ public:
     }
 };
 
+class identifier_declaration : public Variable
+{
+    private:
+            std::string name_of_variable;
+    
+    public: 
+            identifier_declaration ( std::string _name_of_variable) : name_of_variable (_name_of_variable) {}
+
+};
+
 #endif
