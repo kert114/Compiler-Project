@@ -35,6 +35,12 @@ class variable
   private :
     int variable_address;
     type_declaration variable_type;
+  public :
+    variable(int _variable_address, type_declaration _variable_type)
+    : variable_address(_variable_address), variable_type(_variable_type){}
+
+    int fetch_variable_address(){return variable_address;}
+    type_declaration fetch_variable_type(){return variable_type;}
 
 };
 

@@ -47,7 +47,7 @@
 
 %type <expr> function_definition external_declaration declaration type parameter_list compound_statement
 %type <expr> parameter_declaration primary_expression translation_unit type_specifier
-%type <expr> assignment_expression argument_expression_list declaration_specifiers
+%type <expr> assignment_expression argument_expression_list declaration_specifiers init_declarator_list
 %type <number> T_FLOAT T_INTEGER
 
 %type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME T_IDENTIFIER
@@ -76,8 +76,9 @@ argument_expression_list : assignment_expression {$$ = new }
                           | argument_expression_list COMMA assignment_expression
                           ;
 
-declaration : declaration_specifiers SEMI_COLON
-            | declaration_specifiers init_declarator_list SEMI_COLON
+declaration : type_specifier SEMI_COLON
+            | type_specifier init_declarator_list SEMI_COLON
+            ;
 
 
               
