@@ -64,13 +64,7 @@ class Context
     std::map<std::string, std::string> label_variables;
 		std::map<std::string, std::string> label_declarations;
 
-    void expand_context_scope(){
-      
-    }
-
-    void reduce_context_scope(){
-
-    }
+    
 
 		void allocate_stack()
 		{

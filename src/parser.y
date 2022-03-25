@@ -45,9 +45,9 @@
 
 /*----------------type--------------*/
 
-%type <expr> function_definition external_declaration declaration type parameter_list compound_statement
+%type <expr> function_definition external_declaration declaration type parameters compound_statement
 %type <expr> parameter_declaration primary_expression translation_unit type_specifier
-%type <expr> assignment_expression argument_expression_list declaration_specifiers init_declarator_list
+%type <expr> assignment_expression argument_expressions declaration_specifiers init_declarators
 %type <number> T_FLOAT T_INTEGER
 
 %type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME T_IDENTIFIER
@@ -68,21 +68,21 @@ external_declaration : function_definition { $$ = $1; }
                     
 
 
-function_definition : type T_IDENTIFIER L_BRACKET /*parameter_list */ R_BRACKET compound_statement
-                    | { ( $$ = new function_declaration($1, *$2, /*$4, $6 */ $5); }
+function_definition : type T_IDENTIFIER L_BRACKET parameters R_BRACKET compound_statement
+                    | { ( $$ = new function_declaration($1, *$2, $4, $6); }
                     ;
 
-argument_expression_list : assignment_expression {$$ = new }
-                          | argument_expression_list COMMA assignment_expression
+argument_expressions : assignment_expression {$$ = new }
+                          | argument_expressions COMMA assignment_expression
                           ;
 
 declaration : type_specifier SEMI_COLON
-            | type_specifier init_declarator_list SEMI_COLON
+            | type_specifier init_declarators SEMI_COLON
             ;
 
 
               
-//parameter_list : parameter_declaration { $$ = new std::vector<}
+//parameters : parameter_declaration { $$ = new }
 
 primary_expression : T_IDENTIFIER { $$ = new Identifier_declaration(*$1); };
 	                 /* | T_CONSTANT
@@ -92,13 +92,22 @@ primary_expression : T_IDENTIFIER { $$ = new Identifier_declaration(*$1); };
 	                  
 
 compound_statement : L_SQUIRLY R_SQUIRLY { $$ = new compound_statement_declaration(); }
-                    /*|	| '{' statement_list '}'
-	                      | '{' declaration_list '}'
-	                      | '{' declaration_list statement_list '}'
-	                      */
-                        
+                    	| L_SQUIRLY statements R_SQUIRLY { $$ = new compount_statement_declaration($2, NULL); }
+	                    | L_SQUIRLY declarations R_SQUIRLY { $$ = new compount_statement_declaration(NULL, $2); }
+	                    | L_SQUIRLY statements declarations R_SQUIRLY { $$ = new compount_statement_declaration($2, $3); }
 
+return_statement : T_RETURN SEMI_COLON { new return_statement(); }
+                 | T_RETURN argument_expressions SEMI_COLON { new return_statement($2); }
+	                      
+statement : compound_statement
+          | return_statement                        
 
+statements : statement
+           | statements statement
+       
+
+declarations : declaration
+             | declarations declaration           
 
 type_specifier : T_INT {$$ = new type_declaration(INT); }
                 /*| VOID

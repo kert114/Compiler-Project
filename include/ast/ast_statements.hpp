@@ -5,6 +5,22 @@
 #include <iostream>
 #include <vector>
 #include "ast_expression.hpp"
+#include "ast_functions.hpp"
+
+class basic_statement : public Statement{
+    private :
+        Expression* expression;
+    public :
+        basic_statement(Expression* _expression) :
+            expression(_expression){}
+        virtual void translate(Context& context, std::string dest, int sp, int offset){
+            if (expression!=NULL){
+                context.allocate_stack();
+                expression->translate(context, dest, sp, offset);
+                context.deallocate_stack();
+            }
+        }
+};
 
 class compound_statement_declaration
     :public Statement{
@@ -12,11 +28,10 @@ class compound_statement_declaration
             std::vector<Statement*>* statements;
             std::vector<Declaration*>* declarations;
         public :
-            compound_statement_declaration(std::vector<Statement*>* _statements = NULL, std::vector<Declaration*>* declarations = NULL):
+            compound_statement_declaration(std::vector<Statement*>* _statements = NULL, std::vector<Declaration*>* _declarations = NULL):
             statements(_statements), declarations(_declarations){}
 
             virtual void translate(Context& context){
-                context.expand_context_scope();
                 if (declarations != NULL){
 				    for (auto declaration = declarations->begin(); declaration != declarations->end(); declaration++){
 					    (*declaration)->translate(context);
@@ -30,11 +45,20 @@ class compound_statement_declaration
 			    		(*statement)->translate(context);
 			    	}
 			    }
-
-			    context.reduce_context_scope();
             }
 
-    };
+};
+
+class return_statement : public Statement{
+    private : 
+        Expression* expression;
+    public : 
+        return_statement(Expression* _expression) :
+        expression(_expression){}
+
+    std::cout<<"li "<<
+
+};
 
 
 #endif
