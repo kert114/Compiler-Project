@@ -107,6 +107,7 @@ class function_declaration
         std::cout << "move $sp $fp" << std::endl;
         std::cout << "lw $fp "<<offset<<"($sp)" << std::endl;
         std::cout << "addiu $sp $sp "<<sp<< std::endl;
+        std::cout << "jr $31" << std::endl;
     }
 };
 

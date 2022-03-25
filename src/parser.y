@@ -47,7 +47,7 @@
 
 %type <expr> function_definition external_declaration declaration type parameters compound_statement
 %type <expr> parameter_declaration primary_expression translation_unit type_specifier
-%type <expr> assignment_expression argument_expressions declaration_specifiers init_declarators
+%type <expr> assignment_expression argument_expressions_list declaration_specifiers init_declarators
 %type <number> T_FLOAT T_INTEGER
 
 %type <string> T_VARIABLE T_LOG T_EXP T_SQRT FUNCTION_NAME T_IDENTIFIER
@@ -72,11 +72,11 @@ function_definition : type T_IDENTIFIER L_BRACKET parameters R_BRACKET compound_
                     | { ( $$ = new function_declaration($1, *$2, $4, $6); }
                     ;
 
-argument_expressions : assignment_expression {$$ = new }
-                          | argument_expressions COMMA assignment_expression
+argument_expressions_list : assignment_expression {$$ = new std::vector<Expression*>(1,$1); }
+                          | argument_expressions_list COMMA assignment_expression
                           ;
 
-declaration : type_specifier SEMI_COLON
+declaration : type_specifier SEMI_COLON 
             | type_specifier init_declarators SEMI_COLON
             ;
 
@@ -97,7 +97,7 @@ compound_statement : L_SQUIRLY R_SQUIRLY { $$ = new compound_statement_declarati
 	                    | L_SQUIRLY statements declarations R_SQUIRLY { $$ = new compount_statement_declaration($2, $3); }
 
 return_statement : T_RETURN SEMI_COLON { new return_statement(); }
-                 | T_RETURN argument_expressions SEMI_COLON { new return_statement($2); }
+                 | T_RETURN argument_expressions_list SEMI_COLON { new return_statement($2); }
 	                      
 statement : compound_statement
           | return_statement                        
