@@ -68,8 +68,7 @@ external_declaration : function_definition { $$ = $1; }
                     
 
 
-function_definition : type T_IDENTIFIER L_BRACKET parameters R_BRACKET compound_statement
-                    | { ( $$ = new function_declaration($1, *$2, $4, $6); }
+function_definition : type T_IDENTIFIER L_BRACKET parameters R_BRACKET compound_statement { ( $$ = new function_declaration($1, *$2, $4, $6); }
                     ;
 
 argument_expressions_list : assignment_expression {$$ = new std::vector<Expression*>(1,$1); }
