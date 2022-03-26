@@ -57,44 +57,44 @@ class AddOperator : public Operator{
         {return "+";}*/
 public:
     AddOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-    virtual int translate(Context& context, const std::string dest_reg, int sp, int offset) 
+    virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
     {
-        double left = getLeft()->translate(context, "$3", sp, offset);
-        double righ = getRight()->translate (context, "$4", sp, offset);
-        std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;*/
     }
 };
 
 class SubOperator : public Operator{
 public:
     SubOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-    virtual int translate(Context& context, const std::string dest_reg, int sp, int offset) 
+    virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
     {
-        double left = getLeft()->translate(context, "$3", sp, offset);
-        double righ = getRight()->translate (context, "$4", sp, offset);
-        std::cout << "subiu" << dest_reg << " $3 $4" << std::endl;
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "subiu" << dest_reg << " $3 $4" << std::endl;*/
     }
 };
 
 class MulOperator : public Operator{
 public:
     MulOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-        virtual int translate(Context& context, const std::string dest_reg, int sp, int offset) 
+        virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
     {
-        double left = getLeft()->translate(context, "$3", sp, offset);
-        double righ = getRight()->translate (context, "$4", sp, offset);
-        std::cout << "multu" << dest_reg << " $3 $4" << std::endl;
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "multu" << dest_reg << " $3 $4" << std::endl;*/
     }
 };
 
 class DivOperator : public Operator{
 public:
     DivOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-        virtual int translate(Context& context, const std::string dest_reg, int sp, int offset) 
+        virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
     {
-        double left = getLeft()->translate(context, "$3", sp, offset);
-        double righ = getRight()->translate (context, "$4", sp, offset);
-        std::cout << "divu" << dest_reg << " $3 $4" << std::endl;
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "divu" << dest_reg << " $3 $4" << std::endl;*/
     }
 };
 
