@@ -5,6 +5,10 @@
 extern "C" int fileno(FILE *stream);
 
 #include "parser.tab.hpp"
+int yyFlexLexer::yywrap() { return 1; }
+
+// Add definition of yyin
+std::iostream* yyin;
 %}
 
 D			[0-9]
@@ -15,7 +19,6 @@ FS			(f|F|l|L)
 IS			(u|U|l|L)*
 
 %%
-/*------Types-----*/
 "int"             { return T_INT; }
 "void"            { return T_VOID; }
 "char"            { return T_CHAR; }
@@ -34,27 +37,24 @@ IS			(u|U|l|L)*
 "volatile"        { return T_VOLATILE; }
 "return"          { return T_RETURN; }
 
-/*------------IFELSE------------*/
 "if"            { return T_IF; }
 "else"          { return T_ELSE; }
 "break"           { return T_BREAK; }
 "case"            { return T_CASE; }
 "switch"          { return T_SWITCH; }
 
-/*-----------LOOPS--------------*/
 "while"         { return T_WHILE; }
 "for"           { return T_FOR; }
 "do"              { return T_DO; }
 
-{L}({L}|{D})*          { yylval.string=new std::string(yytext); return T_IDENTIFIER; }
+{L}({L}|{D})*          { yylval.string=new std::string(yytext); return IDENTIFIER; }
 
-{D}+{IS}?  {yylval.number=strtod(yytext, 0); return T_INTEGER_VAL; }
-0[xX]{H}+{IS}?  {yylval.number=strtod(yytext, 0); return T_INTEGER_VAL; }
-0{D}+{IS}?  {yylval.number=strtod(yytext, 0); return T_INTEGER_VAL; }
+{D}+{IS}?  { yylval.number=strtod(yytext, 0); return T_INTEGER_VAL; }
+0[xX]{H}+{IS}?  { yylval.number=strtod(yytext, 0); return T_INTEGER_VAL; }
 {D}+{E}{FS}? { yylval.number=strtod(yytext, 0); return T_FLOAT_VAL; }
 {D}*"."{D}+({E})?{FS}? { yylval.number=strtod(yytext, 0); return T_FLOAT_VAL; }
 {D}+"."{D}*({E})?{FS}? { yylval.number=strtod(yytext, 0); return T_FLOAT_VAL; }
-L?\"(\\.|[^\\"])*\"   { yylval.string=new std::string(yytext); return T_VARIABLE_VAL; }
+L?\"(\\.|[^\\"])*\"   { yylval.string=new std::string(yytext); return T_VARIABLE; }
 
 ">>="			  { return RIGHT_ASSIGN; }
 "<<="			  { return LEFT_ASSIGN; }

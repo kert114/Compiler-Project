@@ -8,6 +8,14 @@
 #include "ast/ast_functions.hpp"
 #include "ast/ast_types.hpp"
 
-extern const Expression *parseAST();
+#include "stdio.h"
+#include <iostream>
+#include <fstream> 
+#include <string>
+#include <cstdlib>
+#include <typeinfo>
+
+extern const Node* parse();
+extern FILE* yyin;
 
 #endif

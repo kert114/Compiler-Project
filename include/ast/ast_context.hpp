@@ -39,8 +39,12 @@ class variable
     variable(int _variable_address, type_declaration _variable_type)
     : variable_address(_variable_address), variable_type(_variable_type){}
 
-    int fetch_variable_address(){return variable_address;}
-    type_declaration fetch_variable_type(){return variable_type;}
+    int fetch_variable_address(){
+      return variable_address;
+    }
+    type_declaration fetch_variable_type(){
+      return variable_type;
+    }
 
 };
 
@@ -57,14 +61,13 @@ class Context
 
 	public:
 
-		// Trackers and counters
-		int stack_pointer = 0;
-		int register_counter = 0;
-
     std::map<std::string, std::string> label_variables;
 		std::map<std::string, std::string> label_declarations;
 
-    
+    /*variable new_variable(std::string variable_id, type_declaration variable_type, int variable_address){
+      stack_pointer-=4;
+      return variable_id;
+    }*/
 
 		void allocate_stack()
 		{
@@ -83,7 +86,9 @@ class Context
 
     
 
-		int get_stack_pointer() { return stack_pointer; }
+		int fetch_stack_pointer() { 
+      return stack_pointer; 
+    }
 
     void store_register(std::string register_name, int offset)
 		{
@@ -99,7 +104,7 @@ class Node
 
     }
 
-		virtual int translate(
+		virtual void translate(
       Context& context) const 
 		{
 			std::cerr << "Ast_node.hpp: 'compile' not implemented" << std::endl;

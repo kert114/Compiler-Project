@@ -6,36 +6,10 @@
 #include "ast_expression.hpp"
 #include "ast_context.hpp"
 
-class Variable
-    : public Expression
-{
-private:
-    std::string id;
-
-public:
-    Variable(const std::string &_id)
-        : id(_id)
-    {
-    }
-
-    const std::string getId() const
-    {
-        return id;
-    }
-
-    virtual void print(std::ostream &dst) const override
-    {
-        dst << id;
-    }
-
-    virtual double translate(
-        Context& context)
-    {
-    }
-};
+class Variable : public Expression{};
 
 class Integer
-    : public Expression
+    : public Variable
 {
 private:
     int value;
@@ -46,21 +20,21 @@ public:
     {
     }
 
-    double getValue() const
+    double getValue()
     {
         return value;
     }
 
-    virtual void print(std::ostream &dst) const override
+    virtual void print(std::ostream &dst) 
     {
         dst << value;
     }
 
-    virtual double translate(
-        Context& context, std::string dest)
+    virtual void translate(
+        Context& context, variable& variable, std::string dest)
     {
         
-        int stack_pointer = context.get_stack_pointer();
+        int stack_pointer = context.fetch_stack_pointer();
         std::string destination_register = "$2";
 
         std::cout << "li " << dest << value << std::endl;

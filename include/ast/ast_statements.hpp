@@ -14,12 +14,12 @@ private:
 
 public:
     basic_statement(Expression *_expression) : expression(_expression) {}
-    virtual void translate(Context &context, std::string dest, int sp, int offset)
+    virtual void translate(Context& context, variable& variable,const std::string dest_reg)
     {
         if (expression != NULL)
         {
             context.allocate_stack();
-            expression->translate(context, dest, sp, offset);
+            expression->translate(context, variable, dest_reg );
             context.deallocate_stack();
         }
     }
@@ -63,12 +63,12 @@ private:
 public:
     return_statement(Expression *_expression) : expression(_expression) {}
 
-    void translate(Context &context, std::string dest, int sp, int offset)
+    void translate(Context& context, variable& variable,const std::string dest_reg)
     {
         if (expression != NULL)
         {
             context.allocate_stack();
-            expression->translate(context, dest, sp, offset);
+            expression->translate(context, variable, dest_reg );
             context.deallocate_stack();
         }
     }
