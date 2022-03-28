@@ -64,10 +64,13 @@ class Context
     std::map<std::string, std::string> label_variables;
 		std::map<std::string, std::string> label_declarations;
 
-    /*variable new_variable(std::string variable_id, type_declaration variable_type, int variable_address){
+    int new_variable(std::string variable_id, type_declaration variable_type, int variable_address){
       stack_pointer-=4;
-      return variable_id;
-    }*/
+      label_variables[variable_id];
+      label_variables.find(variable_id)->second = variable_address;
+      variable_address=stack_pointer;
+      return variable_address;
+    }
 
 		void allocate_stack()
 		{
