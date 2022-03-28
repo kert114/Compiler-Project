@@ -153,11 +153,11 @@ union YYSTYPE
 {
 #line 17 "src/parser.y"
 
-  const Expression *expr;
-  const Node *node;
-  double number;
-  std::string *string;
-  Declarator 		*declarator_node;
+	const Expression *expr;
+	const Node *node;
+	double number;
+	std::string *string;
+	Declarator 		*declarator_node;
 	Declaration 	*declaration_node;
 	Statement 		*statement_node;
 	Expression 		*expression_node;

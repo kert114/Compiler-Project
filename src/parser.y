@@ -15,11 +15,11 @@
 // Represents the value associated with any kind of
 // AST node.
 %union{
-  const Expression *expr;
-  const Node *node;
-  double number;
-  std::string *string;
-  Declarator 		*declarator_node;
+	const Expression *expr;
+	const Node *node;
+	double number;
+	std::string *string;
+	Declarator 		*declarator_node;
 	Declaration 	*declaration_node;
 	Statement 		*statement_node;
 	Expression 		*expression_node;
@@ -133,8 +133,8 @@ init_declarator : declarator
 				;
 
 initializer 	: assignment_expression
-				| '{' initializer_list '}'
-				| '{' initializer_list ',' '}'
+				| L_SQUIRLY initializer_list R_SQUIRLY
+				| L_SQUIRLY initializer_list COMMA R_SQUIRLY
 				;
 
 initializer_list 	: initializer

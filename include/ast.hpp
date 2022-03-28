@@ -7,6 +7,7 @@
 #include "ast/ast_operators.hpp"
 #include "ast/ast_statements.hpp"
 #include "ast/ast_functions.hpp"
+#include "ast/ast_context.hpp"
 #include "ast/ast_types.hpp"
 
 #include "stdio.h"
@@ -16,7 +17,7 @@
 #include <cstdlib>
 #include <typeinfo>
 
-extern const Node *parseAST();
-extern FILE *yyin;
+extern Node *parseAST();
+FILE *yyin;
 
 #endif
