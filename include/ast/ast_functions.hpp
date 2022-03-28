@@ -8,45 +8,6 @@
 #include <iostream>
 #include <vector>
 
-class Function
-    : public Expression
-{
-private:
-    ExpressionPtr arg;
-
-protected:
-    Function(ExpressionPtr _arg)
-        : arg(_arg)
-    {
-    }
-
-public:
-    virtual ~Function()
-    {
-        delete arg;
-    }
-
-    virtual const char *getFunction() const = 0;
-
-    ExpressionPtr getArg() const
-    {
-        return arg;
-    }
-
-    virtual void print(std::ostream &dst) const override
-    {
-        dst << getFunction() << "( ";
-        arg->print(dst);
-        dst << " )";
-    }
-
-    virtual int translate(
-        Context &context)
-    {
-        throw std::runtime_error("FunctionOperator::evaluate is not implemented.");
-    }
-};
-
 class base_declaration : public Node
 {
 };
@@ -96,12 +57,9 @@ public:
     virtual void translate(Context &context, std::string dest_reg)
     {
         // context.fetch_stack_pointer();
-        std::cout << "addiu $sp $sp "
-                  << "-8" << std::endl; // change -8 to stackpointer
+        std::cout << "addiu $sp $sp "<<"-8" << std::endl; // change -8 to stackpointer
         // stack size changes but is multiple of 8, fp is always 4 less - also stackpointer is 8 per mips instruction (ish)
-        std::cout << "sw $fp "
-                  << "4"
-                  << "($sp)" << std::endl; // change 4 to -stackpointer-4
+        std::cout << "sw $fp "<<"4"<<"($sp)" << std::endl; // change 4 to -stackpointer-4
         std::cout << "move $fp $sp" << std::endl;
         if (statements != NULL)
         {
@@ -110,13 +68,10 @@ public:
                 (*statement)->translate(context);
             }
         }
-        std::cout << "move $sp $fp" << std::endl;
-        std::cout << "lw $fp "
-                  << "4"
-                  << "($sp)" << std::endl; // change 4 to -stackpointer-4
-        std::cout << "addiu $sp $sp "
-                  << "8" << std::endl; // change 8 to -stackpointer
-        std::cout << "jr $31" << std::endl;
+        std::cout<<"move $sp $fp" << std::endl;
+        std::cout<<"lw $fp "<<"4"<<"($sp)" << std::endl; // change 4 to -stackpointer-4
+        std::cout<<"addiu $sp $sp "<<"8" << std::endl; // change 8 to -stackpointer
+        std::cout<<"jr $31" << std::endl;
     }
 };
 

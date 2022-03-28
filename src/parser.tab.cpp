@@ -620,13 +620,13 @@ static const yytype_int16 yyrline[] =
      100,   103,   104,   107,   108,   112,   113,   116,   117,   118,
      119,   120,   121,   122,   126,   127,   131,   132,   135,   136,
      137,   140,   141,   145,   146,   147,   150,   159,   160,   161,
-     162,   165,   166,   168,   169,   180,   181,   185,   186,   187,
-     188,   189,   190,   196,   215,   216,   219,   220,   224,   225,
-     229,   230,   235,   239,   240,   241,   242,   253,   254,   257,
-     258,   261,   262,   265,   266,   269,   270,   273,   274,   275,
-     278,   279,   280,   281,   282,   285,   286,   287,   290,   291,
-     292,   295,   296,   297,   298,   301,   305,   306,   307,   308,
-     309,   313,   314,   315,   316,   317,   318,   319,   320
+     162,   165,   166,   168,   169,   178,   179,   183,   184,   185,
+     186,   187,   188,   194,   213,   214,   217,   218,   222,   223,
+     227,   228,   233,   237,   238,   239,   240,   251,   252,   255,
+     256,   259,   260,   263,   264,   267,   268,   271,   272,   273,
+     276,   277,   278,   279,   280,   283,   284,   285,   288,   289,
+     290,   293,   294,   295,   296,   299,   303,   304,   305,   306,
+     307,   311,   312,   313,   314,   315,   316,   317,   318
 };
 #endif
 
@@ -1737,49 +1737,49 @@ yyreduce:
     break;
 
   case 45:
-#line 180 "src/parser.y"
+#line 178 "src/parser.y"
                                        { new return_statement(); }
 #line 1743 "src/parser.tab.cpp"
     break;
 
   case 46:
-#line 181 "src/parser.y"
+#line 179 "src/parser.y"
                                                                  { new return_statement((yyvsp[-1].expr)); }
 #line 1749 "src/parser.tab.cpp"
     break;
 
   case 53:
-#line 196 "src/parser.y"
+#line 194 "src/parser.y"
                        { (yyval.expr) = new type_declaration(INT); }
 #line 1755 "src/parser.tab.cpp"
     break;
 
   case 54:
-#line 215 "src/parser.y"
+#line 213 "src/parser.y"
                                         { (yyval.expr) = (yyvsp[0].expr); }
 #line 1761 "src/parser.tab.cpp"
     break;
 
   case 56:
-#line 219 "src/parser.y"
+#line 217 "src/parser.y"
                                                  { (yyval.expr) = (yyvsp[0].expr); }
 #line 1767 "src/parser.tab.cpp"
     break;
 
   case 58:
-#line 224 "src/parser.y"
+#line 222 "src/parser.y"
                                                 { (yyval.expr) = (yyvsp[0].expr); }
 #line 1773 "src/parser.tab.cpp"
     break;
 
   case 60:
-#line 229 "src/parser.y"
+#line 227 "src/parser.y"
                                                   {(yyval.expr) = new std::vector<Expression*>(1,(yyvsp[0].expr)); }
 #line 1779 "src/parser.tab.cpp"
     break;
 
   case 63:
-#line 239 "src/parser.y"
+#line 237 "src/parser.y"
                                  { (yyval.expr) = new Identifier_declaration(*(yyvsp[0].expr)); }
 #line 1785 "src/parser.tab.cpp"
     break;
@@ -2017,7 +2017,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 326 "src/parser.y"
+#line 324 "src/parser.y"
 
 
 const Node *root; // Definition of variable (to match declaration earlier)

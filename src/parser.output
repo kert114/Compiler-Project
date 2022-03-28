@@ -49,8 +49,6 @@ Rules useless in grammar
 
   108 jump_statement: T_CONTINUE SEMI_COLON
   109               | T_BREAK SEMI_COLON
-  110               | T_RETURN SEMI_COLON
-  111               | T_RETURN expression SEMI_COLON
 
 
 State 12 conflicts: 1 shift/reduce
