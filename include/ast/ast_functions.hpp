@@ -124,6 +124,7 @@ class Identifier_declaration : public Declarator
 {
 private:
     std::string variable_id;
+    int variable_address;
 
 public:
     Identifier_declaration(std::string _variable_id) : variable_id(_variable_id) {}

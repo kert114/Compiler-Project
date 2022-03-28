@@ -47,9 +47,17 @@ class identifier_declaration : public Variable
 {
     private:
             std::string name_of_variable;
+            std::string variable_id;
+            type_declaration variable_type;
+            int variable_address;
     
     public: 
-            identifier_declaration ( std::string _name_of_variable) : name_of_variable (_name_of_variable) {}
+            identifier_declaration (std::string _name_of_variable, std::string _variable_id, type_declaration _variable_type, int _variable_address) 
+            : name_of_variable (_name_of_variable), variable_id(_variable_id), variable_type(_variable_type), variable_address(_variable_address) {}
+            
+            void translate(Context &context, std::string dest_reg){
+                context.new_variable(variable_id, variable_type, variable_address);
+            }
 
 };
 

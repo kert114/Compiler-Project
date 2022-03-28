@@ -172,8 +172,6 @@ statement : compound_statement { $$ = $1; }
 
 jump_statement 	: T_CONTINUE SEMI_COLON
 				| T_BREAK SEMI_COLON
-				| T_RETURN SEMI_COLON
-				| T_RETURN expression SEMI_COLON
 				;
 
 
@@ -195,7 +193,7 @@ unary_operator 	: AMPERSAND
 
 type_specifier : T_INT { $$ = new type_declaration(INT); }
 	/*			| VOID
-				| CHAR
+/*				| CHAR
 				| SHORT
 				| LONG
 				| FLOAT
@@ -204,9 +202,9 @@ type_specifier : T_INT { $$ = new type_declaration(INT); }
 				| UNSIGNED
 				| struct_or_union_specifier
 				| enum_specifier
-				| TYPE_NAME
+				| TYPE_NAME*/
 				;
-				*/
+				
 
 
 // Expressions

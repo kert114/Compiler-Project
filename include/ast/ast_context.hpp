@@ -87,8 +87,6 @@ class Context
 			}
 		}
 
-    
-
 		int fetch_stack_pointer() { 
       return stack_pointer; 
     }
