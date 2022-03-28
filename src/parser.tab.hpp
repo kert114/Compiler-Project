@@ -121,7 +121,7 @@ extern int yydebug;
     COLON = 311,
     DECIMAL = 312,
     AMPERSAND = 313,
-    EXLAIMATION = 314,
+    EXCLAIMATION = 314,
     TILDA = 315,
     HAT = 316,
     UPRIGHT_SLASH = 317,
@@ -139,14 +139,11 @@ extern int yydebug;
     XOR_ASSIGN = 329,
     OR_ASSIGN = 330,
     IDENTIFIER = 331,
-    parameter_types = 332,
-    init_declarators = 333,
+    CONSTANT = 332,
+    parameter_types = 333,
     abstract_declarator = 334,
     pointer = 335,
-    logical_or_expression = 336,
-    inclusive_or_expression = 337,
-    unary_expression = 338,
-    assignment_operator = 339
+    assignment_operator = 336
   };
 #endif
 
@@ -173,7 +170,7 @@ union YYSTYPE
 
 	std::vector<Expression*>* 	initialisation_list;
 
-#line 177 "src/parser.tab.hpp"
+#line 174 "src/parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

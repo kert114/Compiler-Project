@@ -10,12 +10,12 @@
 
 #include "stdio.h"
 #include <iostream>
-#include <fstream> 
+#include <fstream>
 #include <string>
 #include <cstdlib>
 #include <typeinfo>
 
-extern const Node* parse();
-extern FILE* yyin;
+extern const Node *parseAST();
+extern FILE *yyin;
 
 #endif

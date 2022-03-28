@@ -68,7 +68,7 @@ public:
         if (expression != NULL)
         {
             context.allocate_stack();
-            expression->translate(context, variable, dest_reg );
+            expression->translate(context, variable, dest_reg);
             context.deallocate_stack();
         }
     }
