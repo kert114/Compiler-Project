@@ -72,6 +72,14 @@ public:
             std::cout << "move $t1, $v0" << std::endl;
             std::cout << "mul $v0, $t0, $t1" << std::endl;
         }
+        if (op == "/")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "div $v0, $t0, $t1" << std::endl;
+        }
         if (op == "&")
         {
             left->translate(context);
@@ -87,6 +95,35 @@ public:
             right->translate(context);
             std::cout << "move $t1, $v0" << std::endl;
             std::cout << "or $v0, $t0, $t1" << std::endl;
+        }
+        if (op == "&&")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "beq $t0, $0, $lab1" << std::endl;
+            std::cout << "beq $t1, $0, $lab1" << std::endl;
+            std::cout << "li $v0, 1" << std::endl;
+            std::cout << "b $lab2" << std::endl;
+            std::cout << "$lab1:" << std::endl;
+            std::cout << "move $v0, $0" << std::endl;
+            std::cout << "$lab2:" << std::endl;
+        }
+        if (op == "||")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "bne $t0, $0, $lab2" << std::endl;
+            std::cout << "beq $t1, $0, $lab3" << std::endl;
+            std::cout << "$lab2:" << std::endl;
+            std::cout << "li $v0, 1" << std::endl;
+            std::cout << "b $lab4" << std::endl;
+            std::cout << "$lab3:" << std::endl;
+            std::cout << "move $v0, $0" << std::endl;
+            std::cout << "$lab4:" << std::endl;
         }
         if (op == "==")
         {
@@ -114,6 +151,14 @@ public:
             std::cout << "slt $v0, $t0, $t1"<< std::endl;
             std::cout << "xori $v0, $v0, 0x1"<< std::endl;
             std::cout << "andi $v0, $v0, 0x00ff"<< std::endl;
+        }
+        if (op == ">")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "slt $v0, $t0, $t1" << std::endl;
         }
         /*double left = getLeft()->translate(context, "$3");
         double right = getRight()->translate (context, "$4");
