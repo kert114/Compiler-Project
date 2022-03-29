@@ -1,5 +1,7 @@
 {
     "files.associations": {
+        "*.v": "systemverilog",
+        "*.flex": "lex",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -44,6 +46,7 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "cinttypes": "cpp"
     }
 }
