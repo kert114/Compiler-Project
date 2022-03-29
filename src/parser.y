@@ -130,7 +130,7 @@ return_statement : T_RETURN SEMI_COLON { std::cerr << "in return empty\n"; $$ = 
 				 ;
 
 
-iteration_statement : T_WHILE L_BRACKET expression R_BRACKET statement { $$ = new while_statement($3,$5); }
+iteration_statement : T_WHILE L_BRACKET expression R_BRACKET compound_statement { $$ = new while_statement($3,$5); }
 					| T_DO statement T_WHILE R_BRACKET expression L_BRACKET SEMI_COLON
 					| T_FOR L_BRACKET expression_statement expression_statement R_BRACKET statement
 					| T_FOR L_BRACKET expression_statement expression_statement expression L_BRACKET statement

@@ -97,26 +97,27 @@ public:
 class while_statement : public Statement
 {
 private:
-    Expression *expression;
-    Statement *true_statement;
+    ExpressionPtr expression;
+    Statement *compound_stmnt;
 
 public:
-    while_statement(Expression *_expression, Statement *_true_statement)
-        : expression(_expression), true_statement(_true_statement)
-    {
-        delete expression;
-        delete true_statement;
-    }
+    while_statement(ExpressionPtr _expression, Statement *_compound_stmnt)
+        : expression(_expression), compound_stmnt(_compound_stmnt){}
 
-    void translate(Context &conetxt)
+    void translate(Context &context)
     {
+        std::cout<<"$lab1"<<std::endl;
         if (expression != NULL)
         {
-            context.allocate_stack();
             expression->translate(context);
-            // std::cout << "lw $v0, 8($sp)"<<std::endl;
-            context.deallocate_stack();
         }
+        std::cout<<"li $t3, 0x1"<<std::endl;
+        std::cout<<"bne $v0, $t3, $lab2"<<std::endl;
+        if (compound_stmnt != NULL){
+            compound_stmnt->translate(context);
+        }
+        std::cout<<"b $lab1"<<std::endl;
+        std::cout<<"$lab2:"<<std::endl;
     }
 };
 
