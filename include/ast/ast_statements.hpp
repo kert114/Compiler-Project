@@ -20,20 +20,12 @@ public:
     virtual void translate(Context &context)
     {
         // std::cout << "#placeholder for Declaration" << std::endl;
-<<<<<<< HEAD
         std::cout << "addiu $sp, $sp, -8" << std::endl;
         if (expression != NULL)
             expression->translate(context);
         std::cout << "sw $v0, 8($fp)" << std::endl;
         context.label_variables[id] = 8;
         std::cout << "addiu $sp, $sp,  8" << std::endl;
-=======
-        std::cout << "addiu $sp, $sp, -80" << std::endl;
-        expression->translate(context);
-        // std::cout<<context.get_variable_offset(id)<<std::endl;
-        std::cout << "sw $v0, 8($fp)"<< std::endl;
-        std::cout << "addiu $sp, $sp,  80" << std::endl;
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
     }
 };
 
@@ -93,6 +85,31 @@ public:
     }
 
     void translate(Context &context)
+    {
+        if (expression != NULL)
+        {
+            context.allocate_stack();
+            expression->translate(context);
+            // std::cout << "lw $v0, 8($sp)"<<std::endl;
+            context.deallocate_stack();
+        }
+    }
+};
+class while_statement : public Statement
+{
+private:
+    Expression *expression;
+    Statement *true_statement;
+
+public:
+    while_statement(Expression *_expression, Statement *_true_statement)
+        : expression(_expression), true_statement(_true_statement)
+    {
+        delete expression;
+        delete true_statement;
+    }
+
+    void translate(Context &conetxt)
     {
         if (expression != NULL)
         {

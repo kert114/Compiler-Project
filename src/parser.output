@@ -1,9 +1,5 @@
 Terminals unused in grammar
 
-<<<<<<< HEAD
-=======
-    EQUAL_TO
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
     L_SQUARE
     R_SQUARE
     T_WHILE
@@ -37,12 +33,6 @@ Terminals unused in grammar
     CONSTANT
 
 
-<<<<<<< HEAD
-=======
-State 35 conflicts: 1 shift/reduce
-
-
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 Grammar
 
     0 $accept: root $end
@@ -119,11 +109,7 @@ Grammar
    51               | and_expression AMPERSAND equality_expression
 
    52 equality_expression: relational_expression
-<<<<<<< HEAD
    53                    | equality_expression EQUAL_TO relational_expression
-=======
-   53                    | equality_expression EQUAL relational_expression
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
    54                    | equality_expression NOT_EQUAL relational_expression
 
    55 relational_expression: shift_expression
@@ -166,11 +152,7 @@ Terminals, with rules where they appear
     GREATER_THAN <string> (264) 57
     GREATER_OR_EQUAL <string> (265) 59
     LESS_OR_EQUAL <string> (266) 58
-<<<<<<< HEAD
     EQUAL_TO (267) 53
-=======
-    EQUAL_TO (267)
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
     NOT_EQUAL <string> (268) 54
     DECREMENT_OP <string> (269) 72
     INCREMENT_OP <string> (270) 71
@@ -222,11 +204,7 @@ Terminals, with rules where they appear
     UPRIGHT_SLASH (316) 47
     QUESTION_MARK <string> (317) 41
     PTR_OP (318)
-<<<<<<< HEAD
     EQUAL <string> (319) 11 12 23
-=======
-    EQUAL <string> (319) 11 12 23 53
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
     RIGHT_ASSIGN <string> (320) 30
     LEFT_ASSIGN <string> (321) 29
     ADD_ASSIGN <string> (322) 27
@@ -668,19 +646,11 @@ State 29
 State 30
 
    50 and_expression: equality_expression .
-<<<<<<< HEAD
    53 equality_expression: equality_expression . EQUAL_TO relational_expression
    54                    | equality_expression . NOT_EQUAL relational_expression
 
     EQUAL_TO   shift, and go to state 50
     NOT_EQUAL  shift, and go to state 51
-=======
-   53 equality_expression: equality_expression . EQUAL relational_expression
-   54                    | equality_expression . NOT_EQUAL relational_expression
-
-    NOT_EQUAL  shift, and go to state 50
-    EQUAL      shift, and go to state 51
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 
     $default  reduce using rule 50 (and_expression)
 
@@ -756,10 +726,6 @@ State 35
     XOR_ASSIGN    shift, and go to state 72
     OR_ASSIGN     shift, and go to state 73
 
-<<<<<<< HEAD
-=======
-    EQUAL     [reduce using rule 66 (multiplicative_expression)]
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
     $default  reduce using rule 66 (multiplicative_expression)
 
     assignment_operator  go to state 74
@@ -963,11 +929,7 @@ State 49
 
 State 50
 
-<<<<<<< HEAD
    53 equality_expression: equality_expression EQUAL_TO . relational_expression
-=======
-   54 equality_expression: equality_expression NOT_EQUAL . relational_expression
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
@@ -986,11 +948,7 @@ State 50
 
 State 51
 
-<<<<<<< HEAD
    54 equality_expression: equality_expression NOT_EQUAL . relational_expression
-=======
-   53 equality_expression: equality_expression EQUAL . relational_expression
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
@@ -1400,30 +1358,18 @@ State 85
 State 86
 
    51 and_expression: and_expression AMPERSAND equality_expression .
-<<<<<<< HEAD
    53 equality_expression: equality_expression . EQUAL_TO relational_expression
    54                    | equality_expression . NOT_EQUAL relational_expression
 
     EQUAL_TO   shift, and go to state 50
     NOT_EQUAL  shift, and go to state 51
-=======
-   53 equality_expression: equality_expression . EQUAL relational_expression
-   54                    | equality_expression . NOT_EQUAL relational_expression
-
-    NOT_EQUAL  shift, and go to state 50
-    EQUAL      shift, and go to state 51
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 
     $default  reduce using rule 51 (and_expression)
 
 
 State 87
 
-<<<<<<< HEAD
    53 equality_expression: equality_expression EQUAL_TO relational_expression .
-=======
-   54 equality_expression: equality_expression NOT_EQUAL relational_expression .
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
    56 relational_expression: relational_expression . LESS_THAN shift_expression
    57                      | relational_expression . GREATER_THAN shift_expression
    58                      | relational_expression . LESS_OR_EQUAL shift_expression
@@ -1434,20 +1380,12 @@ State 87
     GREATER_OR_EQUAL  shift, and go to state 54
     LESS_OR_EQUAL     shift, and go to state 55
 
-<<<<<<< HEAD
     $default  reduce using rule 53 (equality_expression)
-=======
-    $default  reduce using rule 54 (equality_expression)
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 
 
 State 88
 
-<<<<<<< HEAD
    54 equality_expression: equality_expression NOT_EQUAL relational_expression .
-=======
-   53 equality_expression: equality_expression EQUAL relational_expression .
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
    56 relational_expression: relational_expression . LESS_THAN shift_expression
    57                      | relational_expression . GREATER_THAN shift_expression
    58                      | relational_expression . LESS_OR_EQUAL shift_expression
@@ -1458,11 +1396,7 @@ State 88
     GREATER_OR_EQUAL  shift, and go to state 54
     LESS_OR_EQUAL     shift, and go to state 55
 
-<<<<<<< HEAD
     $default  reduce using rule 54 (equality_expression)
-=======
-    $default  reduce using rule 53 (equality_expression)
->>>>>>> 4e3db8006b6c74e9df9bcca8d60edee58729d27e
 
 
 State 89

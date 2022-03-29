@@ -96,6 +96,14 @@ public:
             std::cout << "move $t1, $v0" << std::endl;
             std::cout << "or $v0, $t0, $t1" << std::endl;
         }
+        if (op == "^")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "xor $v0, $t0, $t1" << std::endl;
+        }
         if (op == "&&")
         {
             left->translate(context);

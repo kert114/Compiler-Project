@@ -65,7 +65,7 @@
 %type <declaration_list_vector> declarations
 %type <statement_list_vector> statements
 %type <string> assignment_operator 
-%type <expr> expression  logical_or_expression inclusive_or_expression unary_expression assignment_expression
+%type <expr> expression  logical_or_expression inclusive_or_expression unary_expression assignment_expression iteration_statement
 %type <expr> exclusive_or_expression conditional_expression multiplicative_expression primary_expression
 %type <expr> equality_expression relational_expression shift_expression additive_expression logical_and_expression and_expression
 %type <string> IDENTIFIER MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN
@@ -125,6 +125,15 @@ return_statement : T_RETURN SEMI_COLON { std::cerr << "in return empty\n"; $$ = 
                  | T_RETURN expression SEMI_COLON { std::cerr << "in return expr\n"; $$ = new return_statement_declaration($2); }
 				 ;
 
+
+iteration_statement : T_WHILE L_BRACKET expression R_BRACKET statement { $$ = new while_statement($3,$5); }
+					| T_DO statement T_WHILE R_BRACKET expression L_BRACKET SEMI_COLON
+					| T_FOR L_BRACKET expression_statement expression_statement R_BRACKET statement
+					| T_FOR L_BRACKET expression_statement expression_statement expression L_BRACKET statement
+					;
+expression_statement    : SEMI_COLON
+						| expression SEMI_COLON
+						;
 // operators
 
 assignment_operator : EQUAL 
@@ -144,7 +153,7 @@ assignment_operator : EQUAL
 
 primary_expression  : IDENTIFIER {  std::cerr << "in primary_expr IDENTIFIER\n"; $$ = new Variable(*$1); };
 	                | T_INTEGER_VAL  { std::cerr << "in primary_expr INT_VAL\n"; $$ = new Integer( $1 ); }
-					| '(' expression ')' { $$ = $2; };
+					| L_BRACKET expression R_BRACKET { $$ = $2; };
                     ;
 
 expression 	: assignment_expression { $$ = $1; }
