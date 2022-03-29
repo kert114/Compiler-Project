@@ -19,7 +19,7 @@ public:
     virtual ~Expression()
     {
     }
-    //! Tell and expression to print itself to the given stream
+    //! Tell an expression to print itself to the given stream
     // virtual void print(std::ostream &dst) const = 0;
 
     virtual void translate(Context &context) = 0;

@@ -11,16 +11,18 @@ class Declaration
 {
 private:
     std::string id;
-    Expression* expression;
+    ExpressionPtr expression;
 
 public:
-    Declaration( std::string _id, Expression* _expression)
+    Declaration( std::string _id, ExpressionPtr _expression)
         : id(_id), expression(_expression) {}
 
     virtual void translate(Context &context)
     {
-        std::cout << "#placeholder for Declaration" << std::endl;
+        // std::cout << "#placeholder for Declaration" << std::endl;
         std::cout << "addiu $sp, $sp, -8" << std::endl;
+        expression->translate(context);
+        std::cout << "sw $v0, 8($fp)"<< std::endl;
         std::cout << "addiu $sp, $sp,  8" << std::endl;
     }
 

@@ -101,7 +101,7 @@ declarations  : declaration { std::cerr << "in first declarations\n"; $$ = new s
 
 declaration : T_INT IDENTIFIER SEMI_COLON  { $$ = new Declaration(*$2, NULL); } // int x;
 			| T_INT IDENTIFIER EQUAL expression SEMI_COLON   { std::cerr << "in declaration\n";  $$ = new Declaration(*$2, $4); } // int x = 2*4;
-			| IDENTIFIER EQUAL expression SEMI_COLON   {  $$ = new Declaration(*$1, $3); } // int x = 2*4;
+			| IDENTIFIER EQUAL expression SEMI_COLON   {  $$ = new Declaration(*$1, $3); } // x = 2*4;
             ;
 
 

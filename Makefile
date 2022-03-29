@@ -24,5 +24,5 @@ clean :
 	rm src/*.tab.cpp
 	rm src/*.tab.hpp
 	rm src/*.yy.cpp
-	rm output/*
+	rm out/*
 	rm src/*.output
