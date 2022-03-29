@@ -5,36 +5,50 @@
 #include <iostream>
 #include <vector>
 #include "ast_expression.hpp"
-#include "ast_functions.hpp"
 
-class basic_statement : public Statement
+class Declaration
+    : public Expression
 {
 private:
-    Expression *expression;
+    std::string id;
+    Expression* expression;
 
 public:
-    basic_statement(Expression *_expression) : expression(_expression) {}
-    virtual void translate(Context& context, variable& variable,const std::string dest_reg)
+    Declaration( std::string _id, Expression* _expression)
+        : id(_id), expression(_expression) {}
+
+    virtual void translate(Context &context)
     {
-        if (expression != NULL)
-        {
-            context.allocate_stack();
-            expression->translate(context, variable, dest_reg );
-            context.deallocate_stack();
-        }
+        std::cout << "#placeholder for Declaration" << std::endl;
+        std::cout << "addiu $sp, $sp, -8" << std::endl;
+        std::cout << "addiu $sp, $sp,  8" << std::endl;
     }
+
+};
+
+
+class Statement
+    : public Expression
+{
+public:
+    Statement() {}
+    ~Statement() {}
+    virtual void translate(Context &context) {};
 };
 
 class compound_statement_declaration
     : public Statement
 {
 private:
-    std::vector<Statement *> *statements;
     std::vector<Declaration *> *declarations;
+    std::vector<Statement *> *statements;
 
 public:
-    compound_statement_declaration(std::vector<Statement *> *_statements = NULL, std::vector<Declaration *> *_declarations = NULL) : statements(_statements), declarations(_declarations) {}
-
+    compound_statement_declaration(std::vector<Declaration *> *_declarations, std::vector<Statement *> *_statements) : declarations(_declarations), statements(_statements)  {}
+    ~compound_statement_declaration(){
+        delete statements;
+        delete declarations;
+    }
     virtual void translate(Context &context)
     {
         if (declarations != NULL)
@@ -55,20 +69,23 @@ public:
     }
 };
 
-class return_statement : public Statement
+class return_statement_declaration : public Statement
 {
 private:
     Expression *expression;
 
 public:
-    return_statement(Expression *_expression) : expression(_expression) {}
+    return_statement_declaration(Expression *_expression) : expression(_expression) {}
+    ~return_statement_declaration(){
+        delete expression;
+    }
 
-    void translate(Context& context, variable& variable,const std::string dest_reg)
+    void translate(Context& context)
     {
         if (expression != NULL)
         {
             context.allocate_stack();
-            expression->translate(context, variable, dest_reg);
+            expression->translate(context);
             context.deallocate_stack();
         }
     }

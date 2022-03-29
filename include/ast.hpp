@@ -2,7 +2,6 @@
 #define ast_hpp
 
 #include "ast/ast_expression.hpp"
-#include "ast/ast_context.hpp"
 #include "ast/ast_primitives.hpp"
 #include "ast/ast_operators.hpp"
 #include "ast/ast_statements.hpp"
@@ -17,7 +16,6 @@
 #include <cstdlib>
 #include <typeinfo>
 
-extern Node *parseAST();
-FILE *yyin;
+extern const std::vector<Expression *> *parseAST();
 
 #endif

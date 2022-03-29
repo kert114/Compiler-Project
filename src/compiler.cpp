@@ -1,11 +1,14 @@
-#include "../include/ast.hpp"
+#include "ast.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
-	std::ofstream output_file(argv[4]);
-	yyin=fopen(argv[2], "r");
+	// std::ofstream output_file(argv[4]);
+	// yyin=fopen(argv[2], "r");
 	Context context;
-	const Node *root = parseAST();
-	root->translate(context);
+	const std::vector<Expression *> *root = parseAST();
+	for (auto it = root->begin(); it != root->end(); it++)
+	{
+		(*it)->translate(context);
+	}
 	return 0;
 }
