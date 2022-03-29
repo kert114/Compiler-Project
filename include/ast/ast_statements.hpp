@@ -22,6 +22,7 @@ public:
         // std::cout << "#placeholder for Declaration" << std::endl;
         std::cout << "addiu $sp, $sp, -80" << std::endl;
         expression->translate(context);
+        context.variable_val(id, expression->translate(context));
         // std::cout<<context.get_variable_offset(id)<<std::endl;
         std::cout << "sw $v0, 8($fp)"<< std::endl;
         std::cout << "addiu $sp, $sp,  80" << std::endl;
