@@ -9,7 +9,7 @@ lw $2,12($fp)
 move $t0, $v0
 lw $2,16($fp)
 move $t1, $v0
-li $v0, 0x1
+slt $v0, $t0, $t1
 move $sp, $fp
 lw $fp, 4($sp)
 addiu $sp, $sp, 128
