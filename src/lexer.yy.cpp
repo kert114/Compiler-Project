@@ -968,12 +968,12 @@ YY_RULE_SETUP
 case 18:
 YY_RULE_SETUP
 #line 39 "src/lexer.flex"
-{ return T_IF; }
+{ std::cerr<<"if\n";return T_IF; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 40 "src/lexer.flex"
-{ return T_ELSE; }
+{ std::cerr<<"else\n";return T_ELSE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
@@ -1179,12 +1179,12 @@ YY_RULE_SETUP
 case 60:
 YY_RULE_SETUP
 #line 85 "src/lexer.flex"
-{ return L_BRACKET; }
+{ std::cerr<<"(\n";return L_BRACKET; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
 #line 86 "src/lexer.flex"
-{ return R_BRACKET; }
+{ std::cerr<<")\n";return R_BRACKET; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP

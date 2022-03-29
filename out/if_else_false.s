@@ -3,15 +3,17 @@ f:
 addiu $sp, $sp, -128
 sw $fp, 4($sp)
 move $fp, $sp
-addiu $sp, $sp, -8
-sw $v0, 8($fp)
-addiu $sp, $sp,  8
-addiu $sp, $sp, -8
-li $2, 1234
+li $2, 0
 sw $2, 0($sp)
-sw $v0, 8($fp)
-addiu $sp, $sp,  8
-lw $2,8($fp)
+li $t3, 0x1
+bne $v0, $t3, $lab1
+li $2, 11
+sw $2, -8($sp)
+b $lab2
+$lab1:
+li $2, 10
+sw $2, -8($sp)
+$lab2:
 move $sp, $fp
 lw $fp, 4($sp)
 addiu $sp, $sp, 128

@@ -63,33 +63,37 @@ public:
     }
 };
 
-class if_declaration : public Expression{
-    private :
-        ExpressionPtr expression;
-        Statement *compound_stmnt;
-        Statement *else_compound_stmnt;
-    public :
-        if_declaration(ExpressionPtr _expression, Statement *_compound_stmnt) :
-        expression(_expression), compound_stmnt(_compound_stmnt) {}
-        if_declaration(ExpressionPtr _expression, Statement *_compound_stmnt, Statement *_else_compound_stmnt) :
-        expression(_expression), compound_stmnt(_compound_stmnt), else_compound_stmnt(_else_compound_stmnt) {}
+class if_declaration : public Statement
+{
+private:
+    ExpressionPtr expression;
+    Statement *compound_stmnt;
+    Statement *else_compound_stmnt;
 
-        void translate(Context &context){
-            if(expression != NULL){
-                expression->translate(context);
-            }
-            std::cout<<"li $t3, 0x1"<<std::endl;
-            std::cout<<"bne $v0, $t3, $lab1"<<std::endl;
-            if(compound_stmnt != NULL){
-                compound_stmnt->translate(context);
-            }
-            std::cout<<"b $lab2"<<std::endl;
-            std::cout<<"$lab1:"<<std::endl;
-            if(else_compound_stmnt != NULL){
-                else_compound_stmnt->translate(context);
-            }
-            std::cout<<"$lab2:"<<std::endl;
+public:
+    if_declaration(ExpressionPtr _expression, Statement *_compound_stmnt) : expression(_expression), compound_stmnt(_compound_stmnt) {}
+    if_declaration(ExpressionPtr _expression, Statement *_compound_stmnt, Statement *_else_compound_stmnt) : expression(_expression), compound_stmnt(_compound_stmnt), else_compound_stmnt(_else_compound_stmnt) {}
+
+    void translate(Context &context)
+    {
+        if (expression != NULL)
+        {
+            expression->translate(context);
         }
+        std::cout << "li $t3, 0x1" << std::endl;
+        std::cout << "bne $v0, $t3, $lab1" << std::endl;
+        if (compound_stmnt != NULL)
+        {
+            compound_stmnt->translate(context);
+        }
+        std::cout << "b $lab2" << std::endl;
+        std::cout << "$lab1:" << std::endl;
+        if (else_compound_stmnt != NULL)
+        {
+            else_compound_stmnt->translate(context);
+        }
+        std::cout << "$lab2:" << std::endl;
+    }
 };
 
 /*

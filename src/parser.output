@@ -1,6 +1,7 @@
 Nonterminals useless in grammar
 
-    if_definition
+    iteration_statement
+    expression_statement
 
 
 Terminals unused in grammar
@@ -11,8 +12,6 @@ Terminals unused in grammar
     T_FOR
     T_DO
     TILDA
-    T_IF
-    T_ELSE
     T_CASE
     T_SWITCH
     T_BREAK
@@ -38,15 +37,17 @@ Terminals unused in grammar
     CONSTANT
 
 
-<<<<<<< HEAD
-=======
 Rules useless in grammar
 
-   74 if_definition: T_IF L_BRACKET expression R_BRACKET compound_statement
-   75              | T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement
+   77 iteration_statement: T_WHILE L_BRACKET expression R_BRACKET compound_statement
+   78                    | T_DO statement T_WHILE R_BRACKET expression L_BRACKET SEMI_COLON
+   79                    | T_FOR L_BRACKET expression_statement expression_statement R_BRACKET statement
+   80                    | T_FOR L_BRACKET expression_statement expression_statement expression L_BRACKET statement
+
+   81 expression_statement: SEMI_COLON
+   82                     | expression SEMI_COLON
 
 
->>>>>>> a1b13c7e0b2f579df6ae1c47040424a3d65644a6
 Grammar
 
     0 $accept: root $end
@@ -62,134 +63,136 @@ Grammar
     6 function_definition: T_INT IDENTIFIER L_BRACKET R_BRACKET compound_statement
     7                    | T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER R_BRACKET compound_statement
 
-    8 declarations: declaration
-    9             | declarations declaration
+    8 if_definition: T_IF L_BRACKET expression R_BRACKET compound_statement
+    9              | T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement
 
-   10 declaration: T_INT IDENTIFIER SEMI_COLON
-   11            | T_INT IDENTIFIER EQUAL expression SEMI_COLON
-   12            | IDENTIFIER EQUAL expression SEMI_COLON
+   10 declarations: declaration
+   11             | declarations declaration
 
-   13 statements: statement
-   14           | statements statement
+   12 declaration: T_INT IDENTIFIER SEMI_COLON
+   13            | T_INT IDENTIFIER EQUAL expression SEMI_COLON
+   14            | IDENTIFIER EQUAL expression SEMI_COLON
 
-   15 statement: compound_statement
-   16          | return_statement
+   15 statements: statement
+   16           | statements statement
 
-   17 compound_statement: L_SQUILY R_SQUIRLY
-   18                   | L_SQUILY statements R_SQUIRLY
-   19                   | L_SQUILY declarations R_SQUIRLY
-   20                   | L_SQUILY declarations statements R_SQUIRLY
+   17 statement: compound_statement
+   18          | return_statement
+   19          | if_definition
 
-   21 return_statement: T_RETURN SEMI_COLON
-   22                 | T_RETURN expression SEMI_COLON
+   20 compound_statement: L_SQUILY R_SQUIRLY
+   21                   | L_SQUILY statements R_SQUIRLY
+   22                   | L_SQUILY declarations R_SQUIRLY
+   23                   | L_SQUILY declarations statements R_SQUIRLY
 
-   23 assignment_operator: EQUAL
-   24                    | MUL_ASSIGN
-   25                    | DIV_ASSIGN
-   26                    | MOD_ASSIGN
-   27                    | ADD_ASSIGN
-   28                    | SUB_ASSIGN
-   29                    | LEFT_ASSIGN
-   30                    | RIGHT_ASSIGN
-   31                    | AND_ASSIGN
-   32                    | XOR_ASSIGN
-   33                    | OR_ASSIGN
+   24 return_statement: T_RETURN SEMI_COLON
+   25                 | T_RETURN expression SEMI_COLON
 
-   34 primary_expression: IDENTIFIER
-   35                   | T_INTEGER_VAL
-   36                   | '(' expression ')'
+   26 assignment_operator: EQUAL
+   27                    | MUL_ASSIGN
+   28                    | DIV_ASSIGN
+   29                    | MOD_ASSIGN
+   30                    | ADD_ASSIGN
+   31                    | SUB_ASSIGN
+   32                    | LEFT_ASSIGN
+   33                    | RIGHT_ASSIGN
+   34                    | AND_ASSIGN
+   35                    | XOR_ASSIGN
+   36                    | OR_ASSIGN
 
-   37 expression: assignment_expression
+   37 primary_expression: IDENTIFIER
+   38                   | T_INTEGER_VAL
+   39                   | L_BRACKET expression R_BRACKET
 
-   38 assignment_expression: conditional_expression
-   39                      | unary_expression assignment_operator assignment_expression
+   40 expression: assignment_expression
 
-   40 conditional_expression: logical_or_expression
-   41                       | logical_or_expression QUESTION_MARK expression COLON conditional_expression
+   41 assignment_expression: conditional_expression
+   42                      | unary_expression assignment_operator assignment_expression
 
-   42 logical_or_expression: logical_and_expression
-   43                      | logical_or_expression T_LOGICAL_OR logical_and_expression
+   43 conditional_expression: logical_or_expression
+   44                       | logical_or_expression QUESTION_MARK expression COLON conditional_expression
 
-   44 logical_and_expression: inclusive_or_expression
-   45                       | logical_and_expression T_LOGICAL_AND inclusive_or_expression
+   45 logical_or_expression: logical_and_expression
+   46                      | logical_or_expression T_LOGICAL_OR logical_and_expression
 
-   46 inclusive_or_expression: exclusive_or_expression
-   47                        | inclusive_or_expression UPRIGHT_SLASH exclusive_or_expression
+   47 logical_and_expression: inclusive_or_expression
+   48                       | logical_and_expression T_LOGICAL_AND inclusive_or_expression
 
-   48 exclusive_or_expression: and_expression
-   49                        | exclusive_or_expression HAT and_expression
+   49 inclusive_or_expression: exclusive_or_expression
+   50                        | inclusive_or_expression UPRIGHT_SLASH exclusive_or_expression
 
-   50 and_expression: equality_expression
-   51               | and_expression AMPERSAND equality_expression
+   51 exclusive_or_expression: and_expression
+   52                        | exclusive_or_expression HAT and_expression
 
-   52 equality_expression: relational_expression
-   53                    | equality_expression EQUAL_TO relational_expression
-   54                    | equality_expression NOT_EQUAL relational_expression
+   53 and_expression: equality_expression
+   54               | and_expression AMPERSAND equality_expression
 
-   55 relational_expression: shift_expression
-   56                      | relational_expression LESS_THAN shift_expression
-   57                      | relational_expression GREATER_THAN shift_expression
-   58                      | relational_expression LESS_OR_EQUAL shift_expression
-   59                      | relational_expression GREATER_OR_EQUAL shift_expression
+   55 equality_expression: relational_expression
+   56                    | equality_expression EQUAL_TO relational_expression
+   57                    | equality_expression NOT_EQUAL relational_expression
 
-   60 shift_expression: additive_expression
-   61                 | shift_expression T_LOGICAL_LEFT_SHIFT additive_expression
-   62                 | shift_expression T_LOGICAL_RIGHT_SHIFT additive_expression
+   58 relational_expression: shift_expression
+   59                      | relational_expression LESS_THAN shift_expression
+   60                      | relational_expression GREATER_THAN shift_expression
+   61                      | relational_expression LESS_OR_EQUAL shift_expression
+   62                      | relational_expression GREATER_OR_EQUAL shift_expression
 
-   63 additive_expression: multiplicative_expression
-   64                    | additive_expression PLUS multiplicative_expression
-   65                    | additive_expression MINUS multiplicative_expression
+   63 shift_expression: additive_expression
+   64                 | shift_expression T_LOGICAL_LEFT_SHIFT additive_expression
+   65                 | shift_expression T_LOGICAL_RIGHT_SHIFT additive_expression
 
-   66 multiplicative_expression: unary_expression
-   67                          | multiplicative_expression ASTERIX unary_expression
-   68                          | multiplicative_expression R_SLASH unary_expression
-   69                          | multiplicative_expression PERCENT unary_expression
+   66 additive_expression: multiplicative_expression
+   67                    | additive_expression PLUS multiplicative_expression
+   68                    | additive_expression MINUS multiplicative_expression
 
-   70 unary_expression: primary_expression
-   71                 | INCREMENT_OP unary_expression
-   72                 | DECREMENT_OP unary_expression
-   73                 | T_SIZEOF unary_expression
+   69 multiplicative_expression: unary_expression
+   70                          | multiplicative_expression ASTERIX unary_expression
+   71                          | multiplicative_expression R_SLASH unary_expression
+   72                          | multiplicative_expression PERCENT unary_expression
+
+   73 unary_expression: primary_expression
+   74                 | INCREMENT_OP unary_expression
+   75                 | DECREMENT_OP unary_expression
+   76                 | T_SIZEOF unary_expression
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '(' (40) 36
-    ')' (41) 36
     error (256)
-    ASTERIX <string> (258) 67
-    R_SLASH <string> (259) 68
-    PLUS <string> (260) 64
-    MINUS <string> (261) 65
-    PERCENT <string> (262) 69
-    LESS_THAN <string> (263) 56
-    GREATER_THAN <string> (264) 57
-    GREATER_OR_EQUAL <string> (265) 59
-    LESS_OR_EQUAL <string> (266) 58
-    EQUAL_TO (267) 53
-    NOT_EQUAL <string> (268) 54
-    DECREMENT_OP <string> (269) 72
-    INCREMENT_OP <string> (270) 71
-    T_LOGICAL_AND <string> (271) 45
-    T_LOGICAL_OR <string> (272) 43
-    T_LOGICAL_RIGHT_SHIFT <string> (273) 62
-    T_LOGICAL_LEFT_SHIFT <string> (274) 61
-    L_BRACKET (275) 6 7
-    R_BRACKET (276) 6 7
-    R_SQUIRLY (277) 17 18 19 20
+    ASTERIX <string> (258) 70
+    R_SLASH <string> (259) 71
+    PLUS <string> (260) 67
+    MINUS <string> (261) 68
+    PERCENT <string> (262) 72
+    LESS_THAN <string> (263) 59
+    GREATER_THAN <string> (264) 60
+    GREATER_OR_EQUAL <string> (265) 62
+    LESS_OR_EQUAL <string> (266) 61
+    EQUAL_TO (267) 56
+    NOT_EQUAL <string> (268) 57
+    DECREMENT_OP <string> (269) 75
+    INCREMENT_OP <string> (270) 74
+    T_LOGICAL_AND <string> (271) 48
+    T_LOGICAL_OR <string> (272) 46
+    T_LOGICAL_RIGHT_SHIFT <string> (273) 65
+    T_LOGICAL_LEFT_SHIFT <string> (274) 64
+    L_BRACKET (275) 6 7 8 9 39
+    R_BRACKET (276) 6 7 8 9 39
+    R_SQUIRLY (277) 20 21 22 23
     L_SQUARE (278)
     R_SQUARE (279)
     T_WHILE (280)
     T_FOR (281)
     T_DO (282)
     TILDA (283)
-    L_SQUILY (284) 17 18 19 20
-    T_IF (285)
-    T_ELSE (286)
+    L_SQUILY (284) 20 21 22 23
+    T_IF (285) 8 9
+    T_ELSE (286) 9
     T_CASE (287)
     T_SWITCH (288)
     T_BREAK (289)
-    T_INT <string> (290) 6 7 10 11
+    T_INT <string> (290) 6 7 12 13
     T_VOID (291)
     T_DOUBLE (292)
     T_CHAR (293)
@@ -197,7 +200,7 @@ Terminals, with rules where they appear
     T_FLOAT (295)
     T_SHORT (296)
     T_ENUM (297)
-    T_SIZEOF <string> (298) 73
+    T_SIZEOF <string> (298) 76
     T_CONTINUE (299)
     T_DEFAULT (300)
     T_STRUCT (301)
@@ -205,117 +208,120 @@ Terminals, with rules where they appear
     T_UNSIGNED (303)
     T_TYPEDEF (304)
     T_VOLATILE (305)
-    T_RETURN (306) 21 22
+    T_RETURN (306) 24 25
     T_FLOAT_VAL (307)
     T_VARIABLE (308)
-    SEMI_COLON (309) 10 11 12 21 22
+    SEMI_COLON (309) 12 13 14 24 25
     COMMA (310) 7
-    COLON (311) 41
+    COLON (311) 44
     DECIMAL (312)
-    AMPERSAND <string> (313) 51
+    AMPERSAND <string> (313) 54
     EXCLAIMATION <string> (314)
-    HAT <string> (315) 49
-    UPRIGHT_SLASH (316) 47
-    QUESTION_MARK <string> (317) 41
+    HAT <string> (315) 52
+    UPRIGHT_SLASH (316) 50
+    QUESTION_MARK <string> (317) 44
     PTR_OP (318)
-    EQUAL <string> (319) 11 12 23
-    RIGHT_ASSIGN <string> (320) 30
-    LEFT_ASSIGN <string> (321) 29
-    ADD_ASSIGN <string> (322) 27
-    SUB_ASSIGN <string> (323) 28
-    MUL_ASSIGN <string> (324) 24
-    DIV_ASSIGN <string> (325) 25
-    MOD_ASSIGN <string> (326) 26
-    AND_ASSIGN <string> (327) 31
-    XOR_ASSIGN <string> (328) 32
-    OR_ASSIGN <string> (329) 33
-    IDENTIFIER <string> (330) 6 7 10 11 12 34
+    EQUAL <string> (319) 13 14 26
+    RIGHT_ASSIGN <string> (320) 33
+    LEFT_ASSIGN <string> (321) 32
+    ADD_ASSIGN <string> (322) 30
+    SUB_ASSIGN <string> (323) 31
+    MUL_ASSIGN <string> (324) 27
+    DIV_ASSIGN <string> (325) 28
+    MOD_ASSIGN <string> (326) 29
+    AND_ASSIGN <string> (327) 34
+    XOR_ASSIGN <string> (328) 35
+    OR_ASSIGN <string> (329) 36
+    IDENTIFIER <string> (330) 6 7 12 13 14 37
     CONSTANT (331)
-    T_INTEGER_VAL <number> (332) 35
+    T_INTEGER_VAL <number> (332) 38
 
 
 Nonterminals, with rules where they appear
 
-    $accept (80)
+    $accept (78)
         on left: 0
-    root (81)
+    root (79)
         on left: 1
         on right: 0
-    translation_unit <expr_list_vector> (82)
+    translation_unit <expr_list_vector> (80)
         on left: 2 3
         on right: 1 3
-    external_declaration <expr> (83)
+    external_declaration <expr> (81)
         on left: 4 5
         on right: 2 3
-    function_definition <expr> (84)
+    function_definition <expr> (82)
         on left: 6 7
         on right: 4
-    declarations <declaration_list_vector> (85)
+    if_definition <statement_node> (83)
         on left: 8 9
-        on right: 9 19 20
-    declaration <declaration_node> (86)
-        on left: 10 11 12
-        on right: 5 8 9
-    statements <statement_list_vector> (87)
-        on left: 13 14
-        on right: 14 18 20
-    statement <statement_node> (88)
+        on right: 19
+    declarations <declaration_list_vector> (84)
+        on left: 10 11
+        on right: 11 22 23
+    declaration <declaration_node> (85)
+        on left: 12 13 14
+        on right: 5 10 11
+    statements <statement_list_vector> (86)
         on left: 15 16
-        on right: 13 14
-    compound_statement <statement_node> (89)
-        on left: 17 18 19 20
-        on right: 6 7 15
-    return_statement <statement_node> (90)
-        on left: 21 22
-        on right: 16
-    assignment_operator <string> (91)
-        on left: 23 24 25 26 27 28 29 30 31 32 33
-        on right: 39
-    primary_expression <expr> (92)
-        on left: 34 35 36
-        on right: 70
-    expression <expr> (93)
-        on left: 37
-        on right: 11 12 22 36 41
-    assignment_expression <expr> (94)
-        on left: 38 39
-        on right: 37 39
-    conditional_expression <expr> (95)
-        on left: 40 41
-        on right: 38 41
-    logical_or_expression <expr> (96)
-        on left: 42 43
-        on right: 40 41 43
-    logical_and_expression <expr> (97)
-        on left: 44 45
-        on right: 42 43 45
-    inclusive_or_expression <expr> (98)
-        on left: 46 47
-        on right: 44 45 47
-    exclusive_or_expression <expr> (99)
-        on left: 48 49
-        on right: 46 47 49
-    and_expression <expr> (100)
-        on left: 50 51
-        on right: 48 49 51
-    equality_expression <expr> (101)
-        on left: 52 53 54
-        on right: 50 51 53 54
-    relational_expression <expr> (102)
-        on left: 55 56 57 58 59
-        on right: 52 53 54 56 57 58 59
-    shift_expression <expr> (103)
-        on left: 60 61 62
-        on right: 55 56 57 58 59 61 62
-    additive_expression <expr> (104)
+        on right: 16 21 23
+    statement <statement_node> (87)
+        on left: 17 18 19
+        on right: 15 16
+    compound_statement <statement_node> (88)
+        on left: 20 21 22 23
+        on right: 6 7 8 9 17
+    return_statement <statement_node> (89)
+        on left: 24 25
+        on right: 18
+    assignment_operator <string> (90)
+        on left: 26 27 28 29 30 31 32 33 34 35 36
+        on right: 42
+    primary_expression <expr> (91)
+        on left: 37 38 39
+        on right: 73
+    expression <expr> (92)
+        on left: 40
+        on right: 8 9 13 14 25 39 44
+    assignment_expression <expr> (93)
+        on left: 41 42
+        on right: 40 42
+    conditional_expression <expr> (94)
+        on left: 43 44
+        on right: 41 44
+    logical_or_expression <expr> (95)
+        on left: 45 46
+        on right: 43 44 46
+    logical_and_expression <expr> (96)
+        on left: 47 48
+        on right: 45 46 48
+    inclusive_or_expression <expr> (97)
+        on left: 49 50
+        on right: 47 48 50
+    exclusive_or_expression <expr> (98)
+        on left: 51 52
+        on right: 49 50 52
+    and_expression <expr> (99)
+        on left: 53 54
+        on right: 51 52 54
+    equality_expression <expr> (100)
+        on left: 55 56 57
+        on right: 53 54 56 57
+    relational_expression <expr> (101)
+        on left: 58 59 60 61 62
+        on right: 55 56 57 59 60 61 62
+    shift_expression <expr> (102)
         on left: 63 64 65
-        on right: 60 61 62 64 65
-    multiplicative_expression <expr> (105)
-        on left: 66 67 68 69
-        on right: 63 64 65 67 68 69
-    unary_expression <expr> (106)
-        on left: 70 71 72 73
-        on right: 39 66 67 68 69 71 72 73
+        on right: 58 59 60 61 62 64 65
+    additive_expression <expr> (103)
+        on left: 66 67 68
+        on right: 63 64 65 67 68
+    multiplicative_expression <expr> (104)
+        on left: 69 70 71 72
+        on right: 66 67 68 70 71 72
+    unary_expression <expr> (105)
+        on left: 73 74 75 76
+        on right: 42 69 70 71 72 74 75 76
 
 
 State 0
@@ -336,15 +342,15 @@ State 1
 
     6 function_definition: T_INT . IDENTIFIER L_BRACKET R_BRACKET compound_statement
     7                    | T_INT . IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER R_BRACKET compound_statement
-   10 declaration: T_INT . IDENTIFIER SEMI_COLON
-   11            | T_INT . IDENTIFIER EQUAL expression SEMI_COLON
+   12 declaration: T_INT . IDENTIFIER SEMI_COLON
+   13            | T_INT . IDENTIFIER EQUAL expression SEMI_COLON
 
     IDENTIFIER  shift, and go to state 8
 
 
 State 2
 
-   12 declaration: IDENTIFIER . EQUAL expression SEMI_COLON
+   14 declaration: IDENTIFIER . EQUAL expression SEMI_COLON
 
     EQUAL  shift, and go to state 9
 
@@ -396,8 +402,8 @@ State 8
 
     6 function_definition: T_INT IDENTIFIER . L_BRACKET R_BRACKET compound_statement
     7                    | T_INT IDENTIFIER . L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER R_BRACKET compound_statement
-   10 declaration: T_INT IDENTIFIER . SEMI_COLON
-   11            | T_INT IDENTIFIER . EQUAL expression SEMI_COLON
+   12 declaration: T_INT IDENTIFIER . SEMI_COLON
+   13            | T_INT IDENTIFIER . EQUAL expression SEMI_COLON
 
     L_BRACKET   shift, and go to state 12
     SEMI_COLON  shift, and go to state 13
@@ -406,14 +412,14 @@ State 8
 
 State 9
 
-   12 declaration: IDENTIFIER EQUAL . expression SEMI_COLON
+   14 declaration: IDENTIFIER EQUAL . expression SEMI_COLON
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     expression                 go to state 22
@@ -457,21 +463,21 @@ State 12
 
 State 13
 
-   10 declaration: T_INT IDENTIFIER SEMI_COLON .
+   12 declaration: T_INT IDENTIFIER SEMI_COLON .
 
-    $default  reduce using rule 10 (declaration)
+    $default  reduce using rule 12 (declaration)
 
 
 State 14
 
-   11 declaration: T_INT IDENTIFIER EQUAL . expression SEMI_COLON
+   13 declaration: T_INT IDENTIFIER EQUAL . expression SEMI_COLON
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     expression                 go to state 38
@@ -492,14 +498,14 @@ State 14
 
 State 15
 
-   72 unary_expression: DECREMENT_OP . unary_expression
+   75 unary_expression: DECREMENT_OP . unary_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression  go to state 21
     unary_expression    go to state 39
@@ -507,14 +513,14 @@ State 15
 
 State 16
 
-   71 unary_expression: INCREMENT_OP . unary_expression
+   74 unary_expression: INCREMENT_OP . unary_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression  go to state 21
     unary_expression    go to state 40
@@ -522,46 +528,17 @@ State 16
 
 State 17
 
-   73 unary_expression: T_SIZEOF . unary_expression
+   39 primary_expression: L_BRACKET . expression R_BRACKET
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
-
-    primary_expression  go to state 21
-    unary_expression    go to state 41
-
-
-State 18
-
-   34 primary_expression: IDENTIFIER .
-
-    $default  reduce using rule 34 (primary_expression)
-
-
-State 19
-
-   35 primary_expression: T_INTEGER_VAL .
-
-    $default  reduce using rule 35 (primary_expression)
-
-
-State 20
-
-   36 primary_expression: '(' . expression ')'
-
-    DECREMENT_OP   shift, and go to state 15
-    INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
-    expression                 go to state 42
+    expression                 go to state 41
     assignment_expression      go to state 23
     conditional_expression     go to state 24
     logical_or_expression      go to state 25
@@ -577,156 +554,185 @@ State 20
     unary_expression           go to state 35
 
 
+State 18
+
+   76 unary_expression: T_SIZEOF . unary_expression
+
+    DECREMENT_OP   shift, and go to state 15
+    INCREMENT_OP   shift, and go to state 16
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
+
+    primary_expression  go to state 21
+    unary_expression    go to state 42
+
+
+State 19
+
+   37 primary_expression: IDENTIFIER .
+
+    $default  reduce using rule 37 (primary_expression)
+
+
+State 20
+
+   38 primary_expression: T_INTEGER_VAL .
+
+    $default  reduce using rule 38 (primary_expression)
+
+
 State 21
 
-   70 unary_expression: primary_expression .
+   73 unary_expression: primary_expression .
 
-    $default  reduce using rule 70 (unary_expression)
+    $default  reduce using rule 73 (unary_expression)
 
 
 State 22
 
-   12 declaration: IDENTIFIER EQUAL expression . SEMI_COLON
+   14 declaration: IDENTIFIER EQUAL expression . SEMI_COLON
 
     SEMI_COLON  shift, and go to state 43
 
 
 State 23
 
-   37 expression: assignment_expression .
+   40 expression: assignment_expression .
 
-    $default  reduce using rule 37 (expression)
+    $default  reduce using rule 40 (expression)
 
 
 State 24
 
-   38 assignment_expression: conditional_expression .
+   41 assignment_expression: conditional_expression .
 
-    $default  reduce using rule 38 (assignment_expression)
+    $default  reduce using rule 41 (assignment_expression)
 
 
 State 25
 
-   40 conditional_expression: logical_or_expression .
-   41                       | logical_or_expression . QUESTION_MARK expression COLON conditional_expression
-   43 logical_or_expression: logical_or_expression . T_LOGICAL_OR logical_and_expression
+   43 conditional_expression: logical_or_expression .
+   44                       | logical_or_expression . QUESTION_MARK expression COLON conditional_expression
+   46 logical_or_expression: logical_or_expression . T_LOGICAL_OR logical_and_expression
 
     T_LOGICAL_OR   shift, and go to state 44
     QUESTION_MARK  shift, and go to state 45
 
-    $default  reduce using rule 40 (conditional_expression)
+    $default  reduce using rule 43 (conditional_expression)
 
 
 State 26
 
-   42 logical_or_expression: logical_and_expression .
-   45 logical_and_expression: logical_and_expression . T_LOGICAL_AND inclusive_or_expression
+   45 logical_or_expression: logical_and_expression .
+   48 logical_and_expression: logical_and_expression . T_LOGICAL_AND inclusive_or_expression
 
     T_LOGICAL_AND  shift, and go to state 46
 
-    $default  reduce using rule 42 (logical_or_expression)
+    $default  reduce using rule 45 (logical_or_expression)
 
 
 State 27
 
-   44 logical_and_expression: inclusive_or_expression .
-   47 inclusive_or_expression: inclusive_or_expression . UPRIGHT_SLASH exclusive_or_expression
+   47 logical_and_expression: inclusive_or_expression .
+   50 inclusive_or_expression: inclusive_or_expression . UPRIGHT_SLASH exclusive_or_expression
 
     UPRIGHT_SLASH  shift, and go to state 47
 
-    $default  reduce using rule 44 (logical_and_expression)
+    $default  reduce using rule 47 (logical_and_expression)
 
 
 State 28
 
-   46 inclusive_or_expression: exclusive_or_expression .
-   49 exclusive_or_expression: exclusive_or_expression . HAT and_expression
+   49 inclusive_or_expression: exclusive_or_expression .
+   52 exclusive_or_expression: exclusive_or_expression . HAT and_expression
 
     HAT  shift, and go to state 48
 
-    $default  reduce using rule 46 (inclusive_or_expression)
+    $default  reduce using rule 49 (inclusive_or_expression)
 
 
 State 29
 
-   48 exclusive_or_expression: and_expression .
-   51 and_expression: and_expression . AMPERSAND equality_expression
+   51 exclusive_or_expression: and_expression .
+   54 and_expression: and_expression . AMPERSAND equality_expression
 
     AMPERSAND  shift, and go to state 49
 
-    $default  reduce using rule 48 (exclusive_or_expression)
+    $default  reduce using rule 51 (exclusive_or_expression)
 
 
 State 30
 
-   50 and_expression: equality_expression .
-   53 equality_expression: equality_expression . EQUAL_TO relational_expression
-   54                    | equality_expression . NOT_EQUAL relational_expression
+   53 and_expression: equality_expression .
+   56 equality_expression: equality_expression . EQUAL_TO relational_expression
+   57                    | equality_expression . NOT_EQUAL relational_expression
 
     EQUAL_TO   shift, and go to state 50
     NOT_EQUAL  shift, and go to state 51
 
-    $default  reduce using rule 50 (and_expression)
+    $default  reduce using rule 53 (and_expression)
 
 
 State 31
 
-   52 equality_expression: relational_expression .
-   56 relational_expression: relational_expression . LESS_THAN shift_expression
-   57                      | relational_expression . GREATER_THAN shift_expression
-   58                      | relational_expression . LESS_OR_EQUAL shift_expression
-   59                      | relational_expression . GREATER_OR_EQUAL shift_expression
+   55 equality_expression: relational_expression .
+   59 relational_expression: relational_expression . LESS_THAN shift_expression
+   60                      | relational_expression . GREATER_THAN shift_expression
+   61                      | relational_expression . LESS_OR_EQUAL shift_expression
+   62                      | relational_expression . GREATER_OR_EQUAL shift_expression
 
     LESS_THAN         shift, and go to state 52
     GREATER_THAN      shift, and go to state 53
     GREATER_OR_EQUAL  shift, and go to state 54
     LESS_OR_EQUAL     shift, and go to state 55
 
-    $default  reduce using rule 52 (equality_expression)
+    $default  reduce using rule 55 (equality_expression)
 
 
 State 32
 
-   55 relational_expression: shift_expression .
-   61 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
-   62                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
+   58 relational_expression: shift_expression .
+   64 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
+   65                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
 
     T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
     T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
 
-    $default  reduce using rule 55 (relational_expression)
+    $default  reduce using rule 58 (relational_expression)
 
 
 State 33
 
-   60 shift_expression: additive_expression .
-   64 additive_expression: additive_expression . PLUS multiplicative_expression
-   65                    | additive_expression . MINUS multiplicative_expression
+   63 shift_expression: additive_expression .
+   67 additive_expression: additive_expression . PLUS multiplicative_expression
+   68                    | additive_expression . MINUS multiplicative_expression
 
     PLUS   shift, and go to state 58
     MINUS  shift, and go to state 59
 
-    $default  reduce using rule 60 (shift_expression)
+    $default  reduce using rule 63 (shift_expression)
 
 
 State 34
 
-   63 additive_expression: multiplicative_expression .
-   67 multiplicative_expression: multiplicative_expression . ASTERIX unary_expression
-   68                          | multiplicative_expression . R_SLASH unary_expression
-   69                          | multiplicative_expression . PERCENT unary_expression
+   66 additive_expression: multiplicative_expression .
+   70 multiplicative_expression: multiplicative_expression . ASTERIX unary_expression
+   71                          | multiplicative_expression . R_SLASH unary_expression
+   72                          | multiplicative_expression . PERCENT unary_expression
 
     ASTERIX  shift, and go to state 60
     R_SLASH  shift, and go to state 61
     PERCENT  shift, and go to state 62
 
-    $default  reduce using rule 63 (additive_expression)
+    $default  reduce using rule 66 (additive_expression)
 
 
 State 35
 
-   39 assignment_expression: unary_expression . assignment_operator assignment_expression
-   66 multiplicative_expression: unary_expression .
+   42 assignment_expression: unary_expression . assignment_operator assignment_expression
+   69 multiplicative_expression: unary_expression .
 
     EQUAL         shift, and go to state 63
     RIGHT_ASSIGN  shift, and go to state 64
@@ -740,7 +746,7 @@ State 35
     XOR_ASSIGN    shift, and go to state 72
     OR_ASSIGN     shift, and go to state 73
 
-    $default  reduce using rule 66 (multiplicative_expression)
+    $default  reduce using rule 69 (multiplicative_expression)
 
     assignment_operator  go to state 74
 
@@ -763,56 +769,56 @@ State 37
 
 State 38
 
-   11 declaration: T_INT IDENTIFIER EQUAL expression . SEMI_COLON
+   13 declaration: T_INT IDENTIFIER EQUAL expression . SEMI_COLON
 
     SEMI_COLON  shift, and go to state 78
 
 
 State 39
 
-   72 unary_expression: DECREMENT_OP unary_expression .
+   75 unary_expression: DECREMENT_OP unary_expression .
 
-    $default  reduce using rule 72 (unary_expression)
+    $default  reduce using rule 75 (unary_expression)
 
 
 State 40
 
-   71 unary_expression: INCREMENT_OP unary_expression .
+   74 unary_expression: INCREMENT_OP unary_expression .
 
-    $default  reduce using rule 71 (unary_expression)
+    $default  reduce using rule 74 (unary_expression)
 
 
 State 41
 
-   73 unary_expression: T_SIZEOF unary_expression .
+   39 primary_expression: L_BRACKET expression . R_BRACKET
 
-    $default  reduce using rule 73 (unary_expression)
+    R_BRACKET  shift, and go to state 79
 
 
 State 42
 
-   36 primary_expression: '(' expression . ')'
+   76 unary_expression: T_SIZEOF unary_expression .
 
-    ')'  shift, and go to state 79
+    $default  reduce using rule 76 (unary_expression)
 
 
 State 43
 
-   12 declaration: IDENTIFIER EQUAL expression SEMI_COLON .
+   14 declaration: IDENTIFIER EQUAL expression SEMI_COLON .
 
-    $default  reduce using rule 12 (declaration)
+    $default  reduce using rule 14 (declaration)
 
 
 State 44
 
-   43 logical_or_expression: logical_or_expression T_LOGICAL_OR . logical_and_expression
+   46 logical_or_expression: logical_or_expression T_LOGICAL_OR . logical_and_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     logical_and_expression     go to state 80
@@ -829,14 +835,14 @@ State 44
 
 State 45
 
-   41 conditional_expression: logical_or_expression QUESTION_MARK . expression COLON conditional_expression
+   44 conditional_expression: logical_or_expression QUESTION_MARK . expression COLON conditional_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     expression                 go to state 82
@@ -857,14 +863,14 @@ State 45
 
 State 46
 
-   45 logical_and_expression: logical_and_expression T_LOGICAL_AND . inclusive_or_expression
+   48 logical_and_expression: logical_and_expression T_LOGICAL_AND . inclusive_or_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     inclusive_or_expression    go to state 83
@@ -880,14 +886,14 @@ State 46
 
 State 47
 
-   47 inclusive_or_expression: inclusive_or_expression UPRIGHT_SLASH . exclusive_or_expression
+   50 inclusive_or_expression: inclusive_or_expression UPRIGHT_SLASH . exclusive_or_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     exclusive_or_expression    go to state 84
@@ -902,14 +908,14 @@ State 47
 
 State 48
 
-   49 exclusive_or_expression: exclusive_or_expression HAT . and_expression
+   52 exclusive_or_expression: exclusive_or_expression HAT . and_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     and_expression             go to state 85
@@ -923,14 +929,14 @@ State 48
 
 State 49
 
-   51 and_expression: and_expression AMPERSAND . equality_expression
+   54 and_expression: and_expression AMPERSAND . equality_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     equality_expression        go to state 86
@@ -943,14 +949,14 @@ State 49
 
 State 50
 
-   53 equality_expression: equality_expression EQUAL_TO . relational_expression
+   56 equality_expression: equality_expression EQUAL_TO . relational_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     relational_expression      go to state 87
@@ -962,14 +968,14 @@ State 50
 
 State 51
 
-   54 equality_expression: equality_expression NOT_EQUAL . relational_expression
+   57 equality_expression: equality_expression NOT_EQUAL . relational_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     relational_expression      go to state 88
@@ -981,14 +987,14 @@ State 51
 
 State 52
 
-   56 relational_expression: relational_expression LESS_THAN . shift_expression
+   59 relational_expression: relational_expression LESS_THAN . shift_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     shift_expression           go to state 89
@@ -999,14 +1005,14 @@ State 52
 
 State 53
 
-   57 relational_expression: relational_expression GREATER_THAN . shift_expression
+   60 relational_expression: relational_expression GREATER_THAN . shift_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     shift_expression           go to state 90
@@ -1017,14 +1023,14 @@ State 53
 
 State 54
 
-   59 relational_expression: relational_expression GREATER_OR_EQUAL . shift_expression
+   62 relational_expression: relational_expression GREATER_OR_EQUAL . shift_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     shift_expression           go to state 91
@@ -1035,14 +1041,14 @@ State 54
 
 State 55
 
-   58 relational_expression: relational_expression LESS_OR_EQUAL . shift_expression
+   61 relational_expression: relational_expression LESS_OR_EQUAL . shift_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     shift_expression           go to state 92
@@ -1053,14 +1059,14 @@ State 55
 
 State 56
 
-   62 shift_expression: shift_expression T_LOGICAL_RIGHT_SHIFT . additive_expression
+   65 shift_expression: shift_expression T_LOGICAL_RIGHT_SHIFT . additive_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     additive_expression        go to state 93
@@ -1070,14 +1076,14 @@ State 56
 
 State 57
 
-   61 shift_expression: shift_expression T_LOGICAL_LEFT_SHIFT . additive_expression
+   64 shift_expression: shift_expression T_LOGICAL_LEFT_SHIFT . additive_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     additive_expression        go to state 94
@@ -1087,14 +1093,14 @@ State 57
 
 State 58
 
-   64 additive_expression: additive_expression PLUS . multiplicative_expression
+   67 additive_expression: additive_expression PLUS . multiplicative_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     multiplicative_expression  go to state 95
@@ -1103,14 +1109,14 @@ State 58
 
 State 59
 
-   65 additive_expression: additive_expression MINUS . multiplicative_expression
+   68 additive_expression: additive_expression MINUS . multiplicative_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     multiplicative_expression  go to state 96
@@ -1119,14 +1125,14 @@ State 59
 
 State 60
 
-   67 multiplicative_expression: multiplicative_expression ASTERIX . unary_expression
+   70 multiplicative_expression: multiplicative_expression ASTERIX . unary_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression  go to state 21
     unary_expression    go to state 97
@@ -1134,14 +1140,14 @@ State 60
 
 State 61
 
-   68 multiplicative_expression: multiplicative_expression R_SLASH . unary_expression
+   71 multiplicative_expression: multiplicative_expression R_SLASH . unary_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression  go to state 21
     unary_expression    go to state 98
@@ -1149,14 +1155,14 @@ State 61
 
 State 62
 
-   69 multiplicative_expression: multiplicative_expression PERCENT . unary_expression
+   72 multiplicative_expression: multiplicative_expression PERCENT . unary_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression  go to state 21
     unary_expression    go to state 99
@@ -1164,91 +1170,91 @@ State 62
 
 State 63
 
-   23 assignment_operator: EQUAL .
-
-    $default  reduce using rule 23 (assignment_operator)
-
-
-State 64
-
-   30 assignment_operator: RIGHT_ASSIGN .
-
-    $default  reduce using rule 30 (assignment_operator)
-
-
-State 65
-
-   29 assignment_operator: LEFT_ASSIGN .
-
-    $default  reduce using rule 29 (assignment_operator)
-
-
-State 66
-
-   27 assignment_operator: ADD_ASSIGN .
-
-    $default  reduce using rule 27 (assignment_operator)
-
-
-State 67
-
-   28 assignment_operator: SUB_ASSIGN .
-
-    $default  reduce using rule 28 (assignment_operator)
-
-
-State 68
-
-   24 assignment_operator: MUL_ASSIGN .
-
-    $default  reduce using rule 24 (assignment_operator)
-
-
-State 69
-
-   25 assignment_operator: DIV_ASSIGN .
-
-    $default  reduce using rule 25 (assignment_operator)
-
-
-State 70
-
-   26 assignment_operator: MOD_ASSIGN .
+   26 assignment_operator: EQUAL .
 
     $default  reduce using rule 26 (assignment_operator)
 
 
-State 71
+State 64
 
-   31 assignment_operator: AND_ASSIGN .
-
-    $default  reduce using rule 31 (assignment_operator)
-
-
-State 72
-
-   32 assignment_operator: XOR_ASSIGN .
-
-    $default  reduce using rule 32 (assignment_operator)
-
-
-State 73
-
-   33 assignment_operator: OR_ASSIGN .
+   33 assignment_operator: RIGHT_ASSIGN .
 
     $default  reduce using rule 33 (assignment_operator)
 
 
+State 65
+
+   32 assignment_operator: LEFT_ASSIGN .
+
+    $default  reduce using rule 32 (assignment_operator)
+
+
+State 66
+
+   30 assignment_operator: ADD_ASSIGN .
+
+    $default  reduce using rule 30 (assignment_operator)
+
+
+State 67
+
+   31 assignment_operator: SUB_ASSIGN .
+
+    $default  reduce using rule 31 (assignment_operator)
+
+
+State 68
+
+   27 assignment_operator: MUL_ASSIGN .
+
+    $default  reduce using rule 27 (assignment_operator)
+
+
+State 69
+
+   28 assignment_operator: DIV_ASSIGN .
+
+    $default  reduce using rule 28 (assignment_operator)
+
+
+State 70
+
+   29 assignment_operator: MOD_ASSIGN .
+
+    $default  reduce using rule 29 (assignment_operator)
+
+
+State 71
+
+   34 assignment_operator: AND_ASSIGN .
+
+    $default  reduce using rule 34 (assignment_operator)
+
+
+State 72
+
+   35 assignment_operator: XOR_ASSIGN .
+
+    $default  reduce using rule 35 (assignment_operator)
+
+
+State 73
+
+   36 assignment_operator: OR_ASSIGN .
+
+    $default  reduce using rule 36 (assignment_operator)
+
+
 State 74
 
-   39 assignment_expression: unary_expression assignment_operator . assignment_expression
+   42 assignment_expression: unary_expression assignment_operator . assignment_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
     assignment_expression      go to state 100
@@ -1268,23 +1274,25 @@ State 74
 
 State 75
 
-   17 compound_statement: L_SQUILY . R_SQUIRLY
-   18                   | L_SQUILY . statements R_SQUIRLY
-   19                   | L_SQUILY . declarations R_SQUIRLY
-   20                   | L_SQUILY . declarations statements R_SQUIRLY
+   20 compound_statement: L_SQUILY . R_SQUIRLY
+   21                   | L_SQUILY . statements R_SQUIRLY
+   22                   | L_SQUILY . declarations R_SQUIRLY
+   23                   | L_SQUILY . declarations statements R_SQUIRLY
 
     R_SQUIRLY   shift, and go to state 101
     L_SQUILY    shift, and go to state 75
-    T_INT       shift, and go to state 102
-    T_RETURN    shift, and go to state 103
+    T_IF        shift, and go to state 102
+    T_INT       shift, and go to state 103
+    T_RETURN    shift, and go to state 104
     IDENTIFIER  shift, and go to state 2
 
-    declarations        go to state 104
-    declaration         go to state 105
-    statements          go to state 106
-    statement           go to state 107
-    compound_statement  go to state 108
-    return_statement    go to state 109
+    if_definition       go to state 105
+    declarations        go to state 106
+    declaration         go to state 107
+    statements          go to state 108
+    statement           go to state 109
+    compound_statement  go to state 110
+    return_statement    go to state 111
 
 
 State 76
@@ -1298,150 +1306,126 @@ State 77
 
     7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER . COMMA T_INT IDENTIFIER R_BRACKET compound_statement
 
-    COMMA  shift, and go to state 110
+    COMMA  shift, and go to state 112
 
 
 State 78
 
-   11 declaration: T_INT IDENTIFIER EQUAL expression SEMI_COLON .
+   13 declaration: T_INT IDENTIFIER EQUAL expression SEMI_COLON .
 
-    $default  reduce using rule 11 (declaration)
+    $default  reduce using rule 13 (declaration)
 
 
 State 79
 
-   36 primary_expression: '(' expression ')' .
+   39 primary_expression: L_BRACKET expression R_BRACKET .
 
-    $default  reduce using rule 36 (primary_expression)
+    $default  reduce using rule 39 (primary_expression)
 
 
 State 80
 
-   43 logical_or_expression: logical_or_expression T_LOGICAL_OR logical_and_expression .
-   45 logical_and_expression: logical_and_expression . T_LOGICAL_AND inclusive_or_expression
+   46 logical_or_expression: logical_or_expression T_LOGICAL_OR logical_and_expression .
+   48 logical_and_expression: logical_and_expression . T_LOGICAL_AND inclusive_or_expression
 
     T_LOGICAL_AND  shift, and go to state 46
 
-    $default  reduce using rule 43 (logical_or_expression)
+    $default  reduce using rule 46 (logical_or_expression)
 
 
 State 81
 
-   66 multiplicative_expression: unary_expression .
+   69 multiplicative_expression: unary_expression .
 
-    $default  reduce using rule 66 (multiplicative_expression)
+    $default  reduce using rule 69 (multiplicative_expression)
 
 
 State 82
 
-   41 conditional_expression: logical_or_expression QUESTION_MARK expression . COLON conditional_expression
+   44 conditional_expression: logical_or_expression QUESTION_MARK expression . COLON conditional_expression
 
-    COLON  shift, and go to state 111
+    COLON  shift, and go to state 113
 
 
 State 83
 
-   45 logical_and_expression: logical_and_expression T_LOGICAL_AND inclusive_or_expression .
-   47 inclusive_or_expression: inclusive_or_expression . UPRIGHT_SLASH exclusive_or_expression
+   48 logical_and_expression: logical_and_expression T_LOGICAL_AND inclusive_or_expression .
+   50 inclusive_or_expression: inclusive_or_expression . UPRIGHT_SLASH exclusive_or_expression
 
     UPRIGHT_SLASH  shift, and go to state 47
 
-    $default  reduce using rule 45 (logical_and_expression)
+    $default  reduce using rule 48 (logical_and_expression)
 
 
 State 84
 
-   47 inclusive_or_expression: inclusive_or_expression UPRIGHT_SLASH exclusive_or_expression .
-   49 exclusive_or_expression: exclusive_or_expression . HAT and_expression
+   50 inclusive_or_expression: inclusive_or_expression UPRIGHT_SLASH exclusive_or_expression .
+   52 exclusive_or_expression: exclusive_or_expression . HAT and_expression
 
     HAT  shift, and go to state 48
 
-    $default  reduce using rule 47 (inclusive_or_expression)
+    $default  reduce using rule 50 (inclusive_or_expression)
 
 
 State 85
 
-   49 exclusive_or_expression: exclusive_or_expression HAT and_expression .
-   51 and_expression: and_expression . AMPERSAND equality_expression
+   52 exclusive_or_expression: exclusive_or_expression HAT and_expression .
+   54 and_expression: and_expression . AMPERSAND equality_expression
 
     AMPERSAND  shift, and go to state 49
 
-    $default  reduce using rule 49 (exclusive_or_expression)
+    $default  reduce using rule 52 (exclusive_or_expression)
 
 
 State 86
 
-   51 and_expression: and_expression AMPERSAND equality_expression .
-   53 equality_expression: equality_expression . EQUAL_TO relational_expression
-   54                    | equality_expression . NOT_EQUAL relational_expression
+   54 and_expression: and_expression AMPERSAND equality_expression .
+   56 equality_expression: equality_expression . EQUAL_TO relational_expression
+   57                    | equality_expression . NOT_EQUAL relational_expression
 
     EQUAL_TO   shift, and go to state 50
     NOT_EQUAL  shift, and go to state 51
 
-    $default  reduce using rule 51 (and_expression)
+    $default  reduce using rule 54 (and_expression)
 
 
 State 87
 
-   53 equality_expression: equality_expression EQUAL_TO relational_expression .
-   56 relational_expression: relational_expression . LESS_THAN shift_expression
-   57                      | relational_expression . GREATER_THAN shift_expression
-   58                      | relational_expression . LESS_OR_EQUAL shift_expression
-   59                      | relational_expression . GREATER_OR_EQUAL shift_expression
+   56 equality_expression: equality_expression EQUAL_TO relational_expression .
+   59 relational_expression: relational_expression . LESS_THAN shift_expression
+   60                      | relational_expression . GREATER_THAN shift_expression
+   61                      | relational_expression . LESS_OR_EQUAL shift_expression
+   62                      | relational_expression . GREATER_OR_EQUAL shift_expression
 
     LESS_THAN         shift, and go to state 52
     GREATER_THAN      shift, and go to state 53
     GREATER_OR_EQUAL  shift, and go to state 54
     LESS_OR_EQUAL     shift, and go to state 55
 
-    $default  reduce using rule 53 (equality_expression)
+    $default  reduce using rule 56 (equality_expression)
 
 
 State 88
 
-   54 equality_expression: equality_expression NOT_EQUAL relational_expression .
-   56 relational_expression: relational_expression . LESS_THAN shift_expression
-   57                      | relational_expression . GREATER_THAN shift_expression
-   58                      | relational_expression . LESS_OR_EQUAL shift_expression
-   59                      | relational_expression . GREATER_OR_EQUAL shift_expression
+   57 equality_expression: equality_expression NOT_EQUAL relational_expression .
+   59 relational_expression: relational_expression . LESS_THAN shift_expression
+   60                      | relational_expression . GREATER_THAN shift_expression
+   61                      | relational_expression . LESS_OR_EQUAL shift_expression
+   62                      | relational_expression . GREATER_OR_EQUAL shift_expression
 
     LESS_THAN         shift, and go to state 52
     GREATER_THAN      shift, and go to state 53
     GREATER_OR_EQUAL  shift, and go to state 54
     LESS_OR_EQUAL     shift, and go to state 55
 
-    $default  reduce using rule 54 (equality_expression)
+    $default  reduce using rule 57 (equality_expression)
 
 
 State 89
 
-   56 relational_expression: relational_expression LESS_THAN shift_expression .
-   61 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
-   62                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
-
-    T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
-    T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
-
-    $default  reduce using rule 56 (relational_expression)
-
-
-State 90
-
-   57 relational_expression: relational_expression GREATER_THAN shift_expression .
-   61 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
-   62                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
-
-    T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
-    T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
-
-    $default  reduce using rule 57 (relational_expression)
-
-
-State 91
-
-   59 relational_expression: relational_expression GREATER_OR_EQUAL shift_expression .
-   61 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
-   62                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
+   59 relational_expression: relational_expression LESS_THAN shift_expression .
+   64 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
+   65                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
 
     T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
     T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
@@ -1449,128 +1433,160 @@ State 91
     $default  reduce using rule 59 (relational_expression)
 
 
-State 92
+State 90
 
-   58 relational_expression: relational_expression LESS_OR_EQUAL shift_expression .
-   61 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
-   62                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
+   60 relational_expression: relational_expression GREATER_THAN shift_expression .
+   64 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
+   65                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
 
     T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
     T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
 
-    $default  reduce using rule 58 (relational_expression)
+    $default  reduce using rule 60 (relational_expression)
+
+
+State 91
+
+   62 relational_expression: relational_expression GREATER_OR_EQUAL shift_expression .
+   64 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
+   65                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
+
+    T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
+    T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
+
+    $default  reduce using rule 62 (relational_expression)
+
+
+State 92
+
+   61 relational_expression: relational_expression LESS_OR_EQUAL shift_expression .
+   64 shift_expression: shift_expression . T_LOGICAL_LEFT_SHIFT additive_expression
+   65                 | shift_expression . T_LOGICAL_RIGHT_SHIFT additive_expression
+
+    T_LOGICAL_RIGHT_SHIFT  shift, and go to state 56
+    T_LOGICAL_LEFT_SHIFT   shift, and go to state 57
+
+    $default  reduce using rule 61 (relational_expression)
 
 
 State 93
 
-   62 shift_expression: shift_expression T_LOGICAL_RIGHT_SHIFT additive_expression .
-   64 additive_expression: additive_expression . PLUS multiplicative_expression
-   65                    | additive_expression . MINUS multiplicative_expression
+   65 shift_expression: shift_expression T_LOGICAL_RIGHT_SHIFT additive_expression .
+   67 additive_expression: additive_expression . PLUS multiplicative_expression
+   68                    | additive_expression . MINUS multiplicative_expression
 
     PLUS   shift, and go to state 58
     MINUS  shift, and go to state 59
 
-    $default  reduce using rule 62 (shift_expression)
+    $default  reduce using rule 65 (shift_expression)
 
 
 State 94
 
-   61 shift_expression: shift_expression T_LOGICAL_LEFT_SHIFT additive_expression .
-   64 additive_expression: additive_expression . PLUS multiplicative_expression
-   65                    | additive_expression . MINUS multiplicative_expression
+   64 shift_expression: shift_expression T_LOGICAL_LEFT_SHIFT additive_expression .
+   67 additive_expression: additive_expression . PLUS multiplicative_expression
+   68                    | additive_expression . MINUS multiplicative_expression
 
     PLUS   shift, and go to state 58
     MINUS  shift, and go to state 59
 
-    $default  reduce using rule 61 (shift_expression)
+    $default  reduce using rule 64 (shift_expression)
 
 
 State 95
 
-   64 additive_expression: additive_expression PLUS multiplicative_expression .
-   67 multiplicative_expression: multiplicative_expression . ASTERIX unary_expression
-   68                          | multiplicative_expression . R_SLASH unary_expression
-   69                          | multiplicative_expression . PERCENT unary_expression
+   67 additive_expression: additive_expression PLUS multiplicative_expression .
+   70 multiplicative_expression: multiplicative_expression . ASTERIX unary_expression
+   71                          | multiplicative_expression . R_SLASH unary_expression
+   72                          | multiplicative_expression . PERCENT unary_expression
 
     ASTERIX  shift, and go to state 60
     R_SLASH  shift, and go to state 61
     PERCENT  shift, and go to state 62
 
-    $default  reduce using rule 64 (additive_expression)
+    $default  reduce using rule 67 (additive_expression)
 
 
 State 96
 
-   65 additive_expression: additive_expression MINUS multiplicative_expression .
-   67 multiplicative_expression: multiplicative_expression . ASTERIX unary_expression
-   68                          | multiplicative_expression . R_SLASH unary_expression
-   69                          | multiplicative_expression . PERCENT unary_expression
+   68 additive_expression: additive_expression MINUS multiplicative_expression .
+   70 multiplicative_expression: multiplicative_expression . ASTERIX unary_expression
+   71                          | multiplicative_expression . R_SLASH unary_expression
+   72                          | multiplicative_expression . PERCENT unary_expression
 
     ASTERIX  shift, and go to state 60
     R_SLASH  shift, and go to state 61
     PERCENT  shift, and go to state 62
 
-    $default  reduce using rule 65 (additive_expression)
+    $default  reduce using rule 68 (additive_expression)
 
 
 State 97
 
-   67 multiplicative_expression: multiplicative_expression ASTERIX unary_expression .
+   70 multiplicative_expression: multiplicative_expression ASTERIX unary_expression .
 
-    $default  reduce using rule 67 (multiplicative_expression)
+    $default  reduce using rule 70 (multiplicative_expression)
 
 
 State 98
 
-   68 multiplicative_expression: multiplicative_expression R_SLASH unary_expression .
+   71 multiplicative_expression: multiplicative_expression R_SLASH unary_expression .
 
-    $default  reduce using rule 68 (multiplicative_expression)
+    $default  reduce using rule 71 (multiplicative_expression)
 
 
 State 99
 
-   69 multiplicative_expression: multiplicative_expression PERCENT unary_expression .
+   72 multiplicative_expression: multiplicative_expression PERCENT unary_expression .
 
-    $default  reduce using rule 69 (multiplicative_expression)
+    $default  reduce using rule 72 (multiplicative_expression)
 
 
 State 100
 
-   39 assignment_expression: unary_expression assignment_operator assignment_expression .
+   42 assignment_expression: unary_expression assignment_operator assignment_expression .
 
-    $default  reduce using rule 39 (assignment_expression)
+    $default  reduce using rule 42 (assignment_expression)
 
 
 State 101
 
-   17 compound_statement: L_SQUILY R_SQUIRLY .
+   20 compound_statement: L_SQUILY R_SQUIRLY .
 
-    $default  reduce using rule 17 (compound_statement)
+    $default  reduce using rule 20 (compound_statement)
 
 
 State 102
 
-   10 declaration: T_INT . IDENTIFIER SEMI_COLON
-   11            | T_INT . IDENTIFIER EQUAL expression SEMI_COLON
+    8 if_definition: T_IF . L_BRACKET expression R_BRACKET compound_statement
+    9              | T_IF . L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement
 
-    IDENTIFIER  shift, and go to state 112
+    L_BRACKET  shift, and go to state 114
 
 
 State 103
 
-   21 return_statement: T_RETURN . SEMI_COLON
-   22                 | T_RETURN . expression SEMI_COLON
+   12 declaration: T_INT . IDENTIFIER SEMI_COLON
+   13            | T_INT . IDENTIFIER EQUAL expression SEMI_COLON
+
+    IDENTIFIER  shift, and go to state 115
+
+
+State 104
+
+   24 return_statement: T_RETURN . SEMI_COLON
+   25                 | T_RETURN . expression SEMI_COLON
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    SEMI_COLON     shift, and go to state 113
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    SEMI_COLON     shift, and go to state 116
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
-    expression                 go to state 114
+    expression                 go to state 117
     assignment_expression      go to state 23
     conditional_expression     go to state 24
     logical_or_expression      go to state 25
@@ -1586,87 +1602,98 @@ State 103
     unary_expression           go to state 35
 
 
-State 104
-
-    9 declarations: declarations . declaration
-   19 compound_statement: L_SQUILY declarations . R_SQUIRLY
-   20                   | L_SQUILY declarations . statements R_SQUIRLY
-
-    R_SQUIRLY   shift, and go to state 115
-    L_SQUILY    shift, and go to state 75
-    T_INT       shift, and go to state 102
-    T_RETURN    shift, and go to state 103
-    IDENTIFIER  shift, and go to state 2
-
-    declaration         go to state 116
-    statements          go to state 117
-    statement           go to state 107
-    compound_statement  go to state 108
-    return_statement    go to state 109
-
-
 State 105
 
-    8 declarations: declaration .
+   19 statement: if_definition .
 
-    $default  reduce using rule 8 (declarations)
+    $default  reduce using rule 19 (statement)
 
 
 State 106
 
-   14 statements: statements . statement
-   18 compound_statement: L_SQUILY statements . R_SQUIRLY
+   11 declarations: declarations . declaration
+   22 compound_statement: L_SQUILY declarations . R_SQUIRLY
+   23                   | L_SQUILY declarations . statements R_SQUIRLY
 
-    R_SQUIRLY  shift, and go to state 118
-    L_SQUILY   shift, and go to state 75
-    T_RETURN   shift, and go to state 103
+    R_SQUIRLY   shift, and go to state 118
+    L_SQUILY    shift, and go to state 75
+    T_IF        shift, and go to state 102
+    T_INT       shift, and go to state 103
+    T_RETURN    shift, and go to state 104
+    IDENTIFIER  shift, and go to state 2
 
-    statement           go to state 119
-    compound_statement  go to state 108
-    return_statement    go to state 109
+    if_definition       go to state 105
+    declaration         go to state 119
+    statements          go to state 120
+    statement           go to state 109
+    compound_statement  go to state 110
+    return_statement    go to state 111
 
 
 State 107
 
-   13 statements: statement .
+   10 declarations: declaration .
 
-    $default  reduce using rule 13 (statements)
+    $default  reduce using rule 10 (declarations)
 
 
 State 108
 
-   15 statement: compound_statement .
+   16 statements: statements . statement
+   21 compound_statement: L_SQUILY statements . R_SQUIRLY
 
-    $default  reduce using rule 15 (statement)
+    R_SQUIRLY  shift, and go to state 121
+    L_SQUILY   shift, and go to state 75
+    T_IF       shift, and go to state 102
+    T_RETURN   shift, and go to state 104
+
+    if_definition       go to state 105
+    statement           go to state 122
+    compound_statement  go to state 110
+    return_statement    go to state 111
 
 
 State 109
 
-   16 statement: return_statement .
+   15 statements: statement .
 
-    $default  reduce using rule 16 (statement)
+    $default  reduce using rule 15 (statements)
 
 
 State 110
 
-    7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA . T_INT IDENTIFIER R_BRACKET compound_statement
+   17 statement: compound_statement .
 
-    T_INT  shift, and go to state 120
+    $default  reduce using rule 17 (statement)
 
 
 State 111
 
-   41 conditional_expression: logical_or_expression QUESTION_MARK expression COLON . conditional_expression
+   18 statement: return_statement .
+
+    $default  reduce using rule 18 (statement)
+
+
+State 112
+
+    7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA . T_INT IDENTIFIER R_BRACKET compound_statement
+
+    T_INT  shift, and go to state 123
+
+
+State 113
+
+   44 conditional_expression: logical_or_expression QUESTION_MARK expression COLON . conditional_expression
 
     DECREMENT_OP   shift, and go to state 15
     INCREMENT_OP   shift, and go to state 16
-    T_SIZEOF       shift, and go to state 17
-    IDENTIFIER     shift, and go to state 18
-    T_INTEGER_VAL  shift, and go to state 19
-    '('            shift, and go to state 20
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
 
     primary_expression         go to state 21
-    conditional_expression     go to state 121
+    conditional_expression     go to state 124
     logical_or_expression      go to state 25
     logical_and_expression     go to state 26
     inclusive_or_expression    go to state 27
@@ -1680,117 +1707,192 @@ State 111
     unary_expression           go to state 81
 
 
-State 112
+State 114
 
-   10 declaration: T_INT IDENTIFIER . SEMI_COLON
-   11            | T_INT IDENTIFIER . EQUAL expression SEMI_COLON
+    8 if_definition: T_IF L_BRACKET . expression R_BRACKET compound_statement
+    9              | T_IF L_BRACKET . expression R_BRACKET compound_statement T_ELSE compound_statement
+
+    DECREMENT_OP   shift, and go to state 15
+    INCREMENT_OP   shift, and go to state 16
+    L_BRACKET      shift, and go to state 17
+    T_SIZEOF       shift, and go to state 18
+    IDENTIFIER     shift, and go to state 19
+    T_INTEGER_VAL  shift, and go to state 20
+
+    primary_expression         go to state 21
+    expression                 go to state 125
+    assignment_expression      go to state 23
+    conditional_expression     go to state 24
+    logical_or_expression      go to state 25
+    logical_and_expression     go to state 26
+    inclusive_or_expression    go to state 27
+    exclusive_or_expression    go to state 28
+    and_expression             go to state 29
+    equality_expression        go to state 30
+    relational_expression      go to state 31
+    shift_expression           go to state 32
+    additive_expression        go to state 33
+    multiplicative_expression  go to state 34
+    unary_expression           go to state 35
+
+
+State 115
+
+   12 declaration: T_INT IDENTIFIER . SEMI_COLON
+   13            | T_INT IDENTIFIER . EQUAL expression SEMI_COLON
 
     SEMI_COLON  shift, and go to state 13
     EQUAL       shift, and go to state 14
 
 
-State 113
-
-   21 return_statement: T_RETURN SEMI_COLON .
-
-    $default  reduce using rule 21 (return_statement)
-
-
-State 114
-
-   22 return_statement: T_RETURN expression . SEMI_COLON
-
-    SEMI_COLON  shift, and go to state 122
-
-
-State 115
-
-   19 compound_statement: L_SQUILY declarations R_SQUIRLY .
-
-    $default  reduce using rule 19 (compound_statement)
-
-
 State 116
 
-    9 declarations: declarations declaration .
+   24 return_statement: T_RETURN SEMI_COLON .
 
-    $default  reduce using rule 9 (declarations)
+    $default  reduce using rule 24 (return_statement)
 
 
 State 117
 
-   14 statements: statements . statement
-   20 compound_statement: L_SQUILY declarations statements . R_SQUIRLY
+   25 return_statement: T_RETURN expression . SEMI_COLON
 
-    R_SQUIRLY  shift, and go to state 123
-    L_SQUILY   shift, and go to state 75
-    T_RETURN   shift, and go to state 103
-
-    statement           go to state 119
-    compound_statement  go to state 108
-    return_statement    go to state 109
+    SEMI_COLON  shift, and go to state 126
 
 
 State 118
 
-   18 compound_statement: L_SQUILY statements R_SQUIRLY .
+   22 compound_statement: L_SQUILY declarations R_SQUIRLY .
 
-    $default  reduce using rule 18 (compound_statement)
+    $default  reduce using rule 22 (compound_statement)
 
 
 State 119
 
-   14 statements: statements statement .
+   11 declarations: declarations declaration .
 
-    $default  reduce using rule 14 (statements)
+    $default  reduce using rule 11 (declarations)
 
 
 State 120
 
-    7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT . IDENTIFIER R_BRACKET compound_statement
+   16 statements: statements . statement
+   23 compound_statement: L_SQUILY declarations statements . R_SQUIRLY
 
-    IDENTIFIER  shift, and go to state 124
+    R_SQUIRLY  shift, and go to state 127
+    L_SQUILY   shift, and go to state 75
+    T_IF       shift, and go to state 102
+    T_RETURN   shift, and go to state 104
+
+    if_definition       go to state 105
+    statement           go to state 122
+    compound_statement  go to state 110
+    return_statement    go to state 111
 
 
 State 121
 
-   41 conditional_expression: logical_or_expression QUESTION_MARK expression COLON conditional_expression .
+   21 compound_statement: L_SQUILY statements R_SQUIRLY .
 
-    $default  reduce using rule 41 (conditional_expression)
+    $default  reduce using rule 21 (compound_statement)
 
 
 State 122
 
-   22 return_statement: T_RETURN expression SEMI_COLON .
+   16 statements: statements statement .
 
-    $default  reduce using rule 22 (return_statement)
+    $default  reduce using rule 16 (statements)
 
 
 State 123
 
-   20 compound_statement: L_SQUILY declarations statements R_SQUIRLY .
+    7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT . IDENTIFIER R_BRACKET compound_statement
 
-    $default  reduce using rule 20 (compound_statement)
+    IDENTIFIER  shift, and go to state 128
 
 
 State 124
 
-    7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER . R_BRACKET compound_statement
+   44 conditional_expression: logical_or_expression QUESTION_MARK expression COLON conditional_expression .
 
-    R_BRACKET  shift, and go to state 125
+    $default  reduce using rule 44 (conditional_expression)
 
 
 State 125
+
+    8 if_definition: T_IF L_BRACKET expression . R_BRACKET compound_statement
+    9              | T_IF L_BRACKET expression . R_BRACKET compound_statement T_ELSE compound_statement
+
+    R_BRACKET  shift, and go to state 129
+
+
+State 126
+
+   25 return_statement: T_RETURN expression SEMI_COLON .
+
+    $default  reduce using rule 25 (return_statement)
+
+
+State 127
+
+   23 compound_statement: L_SQUILY declarations statements R_SQUIRLY .
+
+    $default  reduce using rule 23 (compound_statement)
+
+
+State 128
+
+    7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER . R_BRACKET compound_statement
+
+    R_BRACKET  shift, and go to state 130
+
+
+State 129
+
+    8 if_definition: T_IF L_BRACKET expression R_BRACKET . compound_statement
+    9              | T_IF L_BRACKET expression R_BRACKET . compound_statement T_ELSE compound_statement
+
+    L_SQUILY  shift, and go to state 75
+
+    compound_statement  go to state 131
+
+
+State 130
 
     7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER R_BRACKET . compound_statement
 
     L_SQUILY  shift, and go to state 75
 
-    compound_statement  go to state 126
+    compound_statement  go to state 132
 
 
-State 126
+State 131
+
+    8 if_definition: T_IF L_BRACKET expression R_BRACKET compound_statement .
+    9              | T_IF L_BRACKET expression R_BRACKET compound_statement . T_ELSE compound_statement
+
+    T_ELSE  shift, and go to state 133
+
+    $default  reduce using rule 8 (if_definition)
+
+
+State 132
 
     7 function_definition: T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER R_BRACKET compound_statement .
 
     $default  reduce using rule 7 (function_definition)
+
+
+State 133
+
+    9 if_definition: T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE . compound_statement
+
+    L_SQUILY  shift, and go to state 75
+
+    compound_statement  go to state 134
+
+
+State 134
+
+    9 if_definition: T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement .
+
+    $default  reduce using rule 9 (if_definition)

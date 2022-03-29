@@ -36,8 +36,8 @@ IS			(u|U|l|L)*
 "volatile"        { return T_VOLATILE; }
 "return"          { return T_RETURN; }
 
-"if"            { return T_IF; }
-"else"          { return T_ELSE; }
+"if"            { std::cerr<<"if\n";return T_IF; }
+"else"          { std::cerr<<"else\n";return T_ELSE; }
 "break"           { return T_BREAK; }
 "case"            { return T_CASE; }
 "switch"          { return T_SWITCH; }
@@ -82,8 +82,8 @@ L?\"(\\.|[^\\"])*\"   { yylval.string=new std::string(yytext); return T_VARIABLE
 ","			    { return COMMA; }
 ":"			    { return COLON; }
 "="			    { return EQUAL; }
-"(" 		  	{ return L_BRACKET; }
-")"	    		{ return R_BRACKET; }
+"(" 		  	{ std::cerr<<"(\n";return L_BRACKET; }
+")"	    		{ std::cerr<<")\n";return R_BRACKET; }
 ("["|"<:")	{ return L_SQUARE; }
 ("]"|":>")	{ return R_SQUARE; }
 "." 			  { return DECIMAL; }

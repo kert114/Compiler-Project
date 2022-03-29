@@ -59,9 +59,9 @@
 /*----------------type--------------*/
 
 %type <expr_list_vector> translation_unit
-%type <expr> external_declaration function_definition if_definition
+%type <expr> external_declaration function_definition 
 %type <declaration_node> declaration 
-%type <statement_node> statement return_statement compound_statement
+%type <statement_node> statement return_statement compound_statement if_definition
 %type <declaration_list_vector> declarations
 %type <statement_list_vector> statements
 %type <string> assignment_operator 
@@ -95,8 +95,8 @@ function_definition : T_INT IDENTIFIER L_BRACKET R_BRACKET compound_statement { 
 					; 
 
 if_definition : T_IF L_BRACKET expression R_BRACKET compound_statement { $$ = new if_declaration($3, $5); }
-			  | T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement { $$ = new if_declaration($3, $5, $7)}
-
+			  | T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement { $$ = new if_declaration($3, $5, $7);}
+			;
 
 // Declarations
 declarations  : declaration { std::cerr << "in first declarations\n"; $$ = new std::vector<Declaration*>; $$->push_back($1); }
@@ -116,7 +116,8 @@ statements : statement {$$ = new std::vector<Statement*>; $$->push_back($1); }
 		   ;
 
 statement : compound_statement { std::cerr << "in compound_statement\n"; $$ = $1; }
-          | return_statement { std::cerr << "in return_statement\n"; $$ = $1; }    
+          | return_statement { std::cerr << "in return_statement\n"; $$ = $1; }  
+		  | if_definition {$$=$1;} 
 		  ;      
 
 compound_statement  : L_SQUILY R_SQUIRLY { $$ = new compound_statement_declaration(NULL, NULL); }
