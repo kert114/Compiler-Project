@@ -110,6 +110,21 @@ public:
             std::cout << "move $v0, $0" << std::endl;
             std::cout << "$lab2:" << std::endl;
         }
+        if (op == "||")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "bne $t0, $0, $lab2" << std::endl;
+            std::cout << "beq $t1, $0, $lab3" << std::endl;
+            std::cout << "$lab2:" << std::endl;
+            std::cout << "li $v0, 1" << std::endl;
+            std::cout << "b $lab4" << std::endl;
+            std::cout << "$lab3:" << std::endl;
+            std::cout << "move $v0, $0" << std::endl;
+            std::cout << "$lab4:" << std::endl;
+        }
         if (op == "==")
         {
             left->translate(context);
