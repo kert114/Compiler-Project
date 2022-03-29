@@ -2,80 +2,68 @@
 #define ast_functions_hpp
 
 #include "ast_expression.hpp"
+#include "ast_statements.hpp"
 
 #include <cmath>
 #include <string>
 #include <iostream>
 #include <vector>
 
-class base_declaration : public Node
-{
-};
-class Statement : public Node
-{
-};
-
-class Declarator
-    : public base_declaration
-{
-public:
-    std::string variable_name() { return ""; }
-    int variable_size() { return 0; }
-
-    void translate_declaration(Context &context, variable &variable, type_declaration declarator_type, std::string dest_reg, int sp, int offset) {}
-    void translate_declaration_initialisation(Context &context, variable &variable, type_declaration declarator_type, Expression *expression, std::string dest_reg, int sp, int offset) {}
-};
-
-class Declaration
-    : public base_declaration
-{
-private:
-    type_declaration TYPE;
-    std::vector<Declarator *> *declarations;
-
-public:
-    Declaration(type_declaration _TYPE, std::vector<Declarator *> *_declarations = NULL)
-        : TYPE(_TYPE), declarations(_declarations) {}
-
-    type get_type() { return TYPE.type_of_variable(); }
-};
+class Statement;
 
 class function_declaration
-    : public base_declaration
+    : public Expression
 {
 private:
-    type_declaration *TYPE;
     std::string function_id;
-    std::vector<Declaration *> *parameter_list;
-    std::vector<Statement *> *statements;
+    Statement *compound_stmnt;
+    int numArgs;
+    std::string var0;
+    std::string var1;
+    std::string var2;
+    std::string var3;
 
 public:
-    function_declaration(type_declaration *_TYPE, std::string _function_id, std::vector<Declaration *> *_parameter_list, std::vector<Statement *> *_statements)
-        : TYPE(_TYPE), function_id(_function_id), parameter_list(_parameter_list), statements(_statements) {}
-    function_declaration(type_declaration *_TYPE, std::string _function_id, std::vector<Statement *> *_statements)
-        : TYPE(_TYPE), function_id(_function_id), statements(_statements) {}
-    virtual void translate(Context &context, std::string dest_reg)
+    function_declaration(std::string _function_id, Statement *_compound_stmnt)
+        : function_id(_function_id), compound_stmnt(_compound_stmnt), numArgs(0) {}
+
+    function_declaration(std::string _function_id, Statement *_compound_stmnt, std::string _var0, std::string _var1)
+        : function_id(_function_id), compound_stmnt(_compound_stmnt), numArgs(2), var0(_var0), var1(_var1) {}
+
+    virtual void translate(Context &context)
     {
+        std::cout << ".globl " << function_id << std::endl;
+        std::cout << function_id << ":" << std::endl;
         // context.fetch_stack_pointer();
-        std::cout << "addiu $sp $sp "<<"-8" << std::endl; // change -8 to stackpointer
+        std::cout << "addiu $sp, $sp, "
+                  << "-128" << std::endl; // change -8 to stackpointer
         // stack size changes but is multiple of 8, fp is always 4 less - also stackpointer is 8 per mips instruction (ish)
-        std::cout << "sw $fp "<<"4"<<"($sp)" << std::endl; // change 4 to -stackpointer-4
-        std::cout << "move $fp $sp" << std::endl;
-        if (statements != NULL)
+        std::cout << "sw $fp, "
+                  << "4($sp)" << std::endl; // change 4 to -stackpointer-4
+        std::cout << "move $fp, $sp" << std::endl;
+
+        if (numArgs == 2)
         {
-            for (auto statement = statements->begin(); statement != statements->end(); statement++)
-            {
-                (*statement)->translate(context);
-            }
+            context.new_variable(var0, 12);
+            context.new_variable(var1, 16);
+            std::cout << "sw $a0, 12($fp)" << std::endl;
+            std::cout << "sw $a1, 16($fp)" << std::endl;
         }
-        std::cout<<"move $sp $fp" << std::endl;
-        std::cout<<"lw $fp "<<"4"<<"($sp)" << std::endl; // change 4 to -stackpointer-4
-        std::cout<<"addiu $sp $sp "<<"8" << std::endl; // change 8 to -stackpointer
-        std::cout<<"jr $31" << std::endl;
+
+        if (compound_stmnt != NULL)
+        {
+            compound_stmnt->translate(context);
+        }
+        std::cout << "move $sp, $fp" << std::endl;
+        std::cout << "lw $fp, "
+                  << "4($sp)" << std::endl; // change 4 to -stackpointer-4
+        std::cout << "addiu $sp, $sp, "
+                  << "128" << std::endl; // change 8 to -stackpointer
+        std::cout << "jr $31" << std::endl;
     }
 };
-
-class Identifier_declaration : public Declarator
+/*
+class Identifier_declaration : public Expression
 {
 private:
     std::string variable_id;
@@ -87,22 +75,27 @@ public:
     {
         return variable_id;
     }
-    void translate_declaration(Context &context, variable &variable, type_declaration declarator_type, std::string dest_reg, int sp, int offset)
+
+    void translate(Context &context){
+        cout << "mv $v0, 0" "# placeholder in Identifier_declaration"<< std::endl;
+    }
+   void translate_declaration(Context &context, variable &variable, type_declaration declarator_type, std::string dest_reg, int sp, int offset)
     {
         // type_declaration variable_type = variable.fetch_variable_type();
         int variable_addr = variable.fetch_variable_address();
         std::cout << "sw $fp " << variable_addr << "($sp)" << std::endl;
     }
-    void translate_declaration_initialisation(Context &context, variable &variable, type_declaration declarator_type, Expression *expression, std::string dest_reg, int sp, int offset)
+    void translate(Context &context, variable &variable, type_declaration declarator_type, Expression *expression, std::string dest_reg, int sp, int offset)
     {
         context.allocate_stack();
         int variable_pointer = context.fetch_stack_pointer();
         int variable_addr = variable.fetch_variable_address();
-        expression->translate(context, variable, dest_reg);
+        expression->translate(context);
         context.deallocate_stack();
         std::cout << "lw $8 " << variable_pointer << std::endl;
         std::cout << "sw $8 " << variable_addr << "(sp)" << std::endl;
     }
-};
 
+};
+ */
 #endif

@@ -5,10 +5,9 @@
 extern "C" int fileno(FILE *stream);
 
 #include "parser.tab.hpp"
-int yyFlexLexer::yywrap() { return 1; }
+
 
 // Add definition of yyin
-std::iostream* yyin;
 %}
 
 D			[0-9]

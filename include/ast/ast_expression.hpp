@@ -11,20 +11,18 @@
 
 class Expression;
 
-typedef const Expression *ExpressionPtr;
+typedef Expression *ExpressionPtr;
 
 class Expression
 {
 public:
     virtual ~Expression()
-    {}
-
+    {
+    }
     //! Tell and expression to print itself to the given stream
-    virtual void print(std::ostream &dst) const =0;
+    // virtual void print(std::ostream &dst) const = 0;
 
-    virtual void translate(Context& context, variable& variable,std::string dest_reg)
-    { throw std::runtime_error("Not implemented."); }
+    virtual void translate(Context &context) = 0;
 };
-
 
 #endif

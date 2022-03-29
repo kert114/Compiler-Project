@@ -16,7 +16,6 @@
 #include <cstdlib>
 #include <typeinfo>
 
-const Node *parseAST(std::istream &src);
-FILE *yyin;
+extern const std::vector<Expression *> *parseAST();
 
 #endif

@@ -5,6 +5,85 @@
 #include <iostream>
 #include "ast_expression.hpp"
 
+class unary_expression
+    : public Expression
+{
+private:
+    ExpressionPtr left;
+    std::string op;
+
+public:
+    unary_expression(ExpressionPtr _left, std::string _operator)
+        : left(_left), op(_operator)
+    {
+    }
+
+    virtual void translate(Context &context)
+    {
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;*/
+    }
+};
+
+class binary_expression
+    : public Expression
+{
+private:
+    ExpressionPtr left;
+    std::string op; // operator of the binary expression
+    ExpressionPtr right;
+    bool isAssign;
+
+public:
+    binary_expression(ExpressionPtr _left, std::string _operator, ExpressionPtr _right)
+        : left(_left), op(_operator), right(_right), isAssign(false)
+    {
+    }
+
+    binary_expression(ExpressionPtr _left, std::string _operator, ExpressionPtr _right, bool _isAssign)
+        : left(_left), op(_operator), right(_right), isAssign(_isAssign)
+    {
+    }
+
+    virtual void translate(Context &context)
+    {
+        if (op == "+")
+        {
+            left->translate(context);
+            std::cout << "move $t0, $v0" << std::endl;
+            right->translate(context);
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "add $v0, $t0, $t1" << std::endl;
+        }
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;*/
+    }
+};
+
+class ternary_expression
+    : public Expression
+{
+private:
+    ExpressionPtr condition;
+    ExpressionPtr true_branch;
+    ExpressionPtr false_branch;
+
+public:
+    ternary_expression(ExpressionPtr _condition, ExpressionPtr _tb, ExpressionPtr _fb)
+        : condition(_condition), true_branch(_tb), false_branch(_fb)
+    {
+    }
+
+    virtual void translate(Context &context)
+    {
+        /*double left = getLeft()->translate(context, "$3");
+        double right = getRight()->translate (context, "$4");
+        std::cout << "addiu" << dest_reg << " $3 $4" << std::endl;*/
+    }
+};
+
 class Operator
     : public Expression
 {
@@ -37,7 +116,6 @@ public:
         return right;
     }
 
-
     /*virtual void print(std::ostream &dst) const override
     {
         dst << "( ";
@@ -48,16 +126,16 @@ public:
         right->print(dst);
         dst << " )";
     }*/
-    
 };
 
-class AddOperator : public Operator{
-/*protected:
-        virtual const char *getOpcode() const override
-        {return "+";}*/
+class AddOperator : public Operator
+{
+    /*protected:
+            virtual const char *getOpcode() const override
+            {return "+";}*/
 public:
-    AddOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-    virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
+    AddOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
+    virtual void translate(Context &context)
     {
         /*double left = getLeft()->translate(context, "$3");
         double right = getRight()->translate (context, "$4");
@@ -65,10 +143,11 @@ public:
     }
 };
 
-class SubOperator : public Operator{
+class SubOperator : public Operator
+{
 public:
-    SubOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-    virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
+    SubOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
+    virtual void translate(Context &context)
     {
         /*double left = getLeft()->translate(context, "$3");
         double right = getRight()->translate (context, "$4");
@@ -76,10 +155,11 @@ public:
     }
 };
 
-class MulOperator : public Operator{
+class MulOperator : public Operator
+{
 public:
-    MulOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-        virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
+    MulOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
+    virtual void translate(Context &context)
     {
         /*double left = getLeft()->translate(context, "$3");
         double right = getRight()->translate (context, "$4");
@@ -87,10 +167,11 @@ public:
     }
 };
 
-class DivOperator : public Operator{
+class DivOperator : public Operator
+{
 public:
-    DivOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
-        virtual void translate(Context& context, const std::string dest_reg, int sp, int offset) 
+    DivOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
+    virtual void translate(Context &context)
     {
         /*double left = getLeft()->translate(context, "$3");
         double right = getRight()->translate (context, "$4");
@@ -98,24 +179,28 @@ public:
     }
 };
 
-class LogicalAndOperator : public Operator{
+class LogicalAndOperator : public Operator
+{
 public:
-    LogicalAndOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+    LogicalAndOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
 };
 
-class LogicalOrOperator : public Operator{
+class LogicalOrOperator : public Operator
+{
 public:
-    LogicalOrOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+    LogicalOrOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
 };
 
-class LogicalRightShiftOperator : public Operator{
+class LogicalRightShiftOperator : public Operator
+{
 public:
-    LogicalRightShiftOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+    LogicalRightShiftOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
 };
 
-class LogicalLeftShiftOperator : public Operator{
+class LogicalLeftShiftOperator : public Operator
+{
 public:
-    LogicalLeftShiftOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right){}
+    LogicalLeftShiftOperator(ExpressionPtr _left, ExpressionPtr _right) : Operator(_left, _right) {}
 };
 
 #endif

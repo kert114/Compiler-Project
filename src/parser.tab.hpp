@@ -46,11 +46,17 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "src/parser.y"
 
-  #include "ast.hpp"
+#include "ast/ast_expression.hpp"
+#include "ast/ast_primitives.hpp"
+#include "ast/ast_operators.hpp"
+#include "ast/ast_statements.hpp"
+#include "ast/ast_functions.hpp"
+#include "ast/ast_context.hpp"
+#include "ast/ast_types.hpp"
+#include <cassert>
 
-  #include <cassert>
-
-  extern const Node *root; // A way of getting the AST out
+  extern const std::vector<Expression*> *g_root; // A way of getting the AST out
+  
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
@@ -58,7 +64,7 @@ extern int yydebug;
   int yylex(void);
   void yyerror(const char *);
 
-#line 62 "src/parser.tab.hpp"
+#line 68 "src/parser.tab.hpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -84,66 +90,62 @@ extern int yydebug;
     T_LOGICAL_LEFT_SHIFT = 274,
     L_BRACKET = 275,
     R_BRACKET = 276,
-    L_SQUIRLY = 277,
-    R_SQUIRLY = 278,
-    L_SQUARE = 279,
-    R_SQUARE = 280,
-    T_WHILE = 281,
-    T_FOR = 282,
-    T_DO = 283,
-    T_IF = 284,
-    T_ELSE = 285,
-    T_CASE = 286,
-    T_SWITCH = 287,
-    T_BREAK = 288,
-    T_INT = 289,
-    T_VOID = 290,
-    T_DOUBLE = 291,
-    T_CHAR = 292,
-    T_LONG = 293,
-    T_FLOAT = 294,
-    T_SHORT = 295,
-    T_ENUM = 296,
-    T_SIZEOF = 297,
-    T_CONTINUE = 298,
-    T_DEFAULT = 299,
-    T_STRUCT = 300,
-    T_SIGNED = 301,
-    T_UNSIGNED = 302,
-    T_TYPEDEF = 303,
-    T_VOLATILE = 304,
-    T_RETURN = 305,
-    T_FLOAT_VAL = 306,
-    T_VARIABLE = 307,
-    T_INTEGER_VAL = 308,
+    R_SQUIRLY = 277,
+    L_SQUARE = 278,
+    R_SQUARE = 279,
+    T_WHILE = 280,
+    T_FOR = 281,
+    T_DO = 282,
+    TILDA = 283,
+    L_SQUILY = 284,
+    T_IF = 285,
+    T_ELSE = 286,
+    T_CASE = 287,
+    T_SWITCH = 288,
+    T_BREAK = 289,
+    T_INT = 290,
+    T_VOID = 291,
+    T_DOUBLE = 292,
+    T_CHAR = 293,
+    T_LONG = 294,
+    T_FLOAT = 295,
+    T_SHORT = 296,
+    T_ENUM = 297,
+    T_SIZEOF = 298,
+    T_CONTINUE = 299,
+    T_DEFAULT = 300,
+    T_STRUCT = 301,
+    T_SIGNED = 302,
+    T_UNSIGNED = 303,
+    T_TYPEDEF = 304,
+    T_VOLATILE = 305,
+    T_RETURN = 306,
+    T_FLOAT_VAL = 307,
+    T_VARIABLE = 308,
     SEMI_COLON = 309,
     COMMA = 310,
     COLON = 311,
     DECIMAL = 312,
     AMPERSAND = 313,
     EXCLAIMATION = 314,
-    TILDA = 315,
-    HAT = 316,
-    UPRIGHT_SLASH = 317,
-    QUESTION_MARK = 318,
-    PTR_OP = 319,
-    EQUAL = 320,
-    RIGHT_ASSIGN = 321,
-    LEFT_ASSIGN = 322,
-    ADD_ASSIGN = 323,
-    SUB_ASSIGN = 324,
-    MUL_ASSIGN = 325,
-    DIV_ASSIGN = 326,
-    MOD_ASSIGN = 327,
-    AND_ASSIGN = 328,
-    XOR_ASSIGN = 329,
-    OR_ASSIGN = 330,
-    IDENTIFIER = 331,
-    CONSTANT = 332,
-    parameter_types = 333,
-    abstract_declarator = 334,
-    pointer = 335,
-    assignment_operator = 336
+    HAT = 315,
+    UPRIGHT_SLASH = 316,
+    QUESTION_MARK = 317,
+    PTR_OP = 318,
+    EQUAL = 319,
+    RIGHT_ASSIGN = 320,
+    LEFT_ASSIGN = 321,
+    ADD_ASSIGN = 322,
+    SUB_ASSIGN = 323,
+    MUL_ASSIGN = 324,
+    DIV_ASSIGN = 325,
+    MOD_ASSIGN = 326,
+    AND_ASSIGN = 327,
+    XOR_ASSIGN = 328,
+    OR_ASSIGN = 329,
+    IDENTIFIER = 330,
+    CONSTANT = 331,
+    T_INTEGER_VAL = 332
   };
 #endif
 
@@ -151,26 +153,19 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "src/parser.y"
+#line 23 "src/parser.y"
 
-	const Expression *expr;
-	const Node *node;
+	Expression *expr;
 	double number;
 	std::string *string;
-	Declarator 		*declarator_node;
 	Declaration 	*declaration_node;
 	Statement 		*statement_node;
-	Expression 		*expression_node;
-	type_declaration *type_node;
 	int 			int_num;
-	std::vector<Expression*>* 	argument_list_vector;
+	std::vector<Expression*>* 	expr_list_vector;
 	std::vector<Statement*>* 	statement_list_vector;
 	std::vector<Declaration*>* 	declaration_list_vector;
-	std::vector<Declarator*>* 	declarator_list_vector;
 
-	std::vector<Expression*>* 	initialisation_list;
-
-#line 174 "src/parser.tab.hpp"
+#line 169 "src/parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
