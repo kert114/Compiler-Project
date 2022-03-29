@@ -44,8 +44,8 @@ public:
 
         if (numArgs == 2)
         {
-            context.new_variable(var0, 12);
-            context.new_variable(var1, 16);
+            context.label_variables[var0] = 12;
+            context.label_variables[var1] = 16;
             std::cout << "sw $a0, 12($fp)" << std::endl;
             std::cout << "sw $a1, 16($fp)" << std::endl;
         }
