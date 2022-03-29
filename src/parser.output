@@ -1,3 +1,8 @@
+Nonterminals useless in grammar
+
+    if_definition
+
+
 Terminals unused in grammar
 
     L_SQUARE
@@ -33,6 +38,15 @@ Terminals unused in grammar
     CONSTANT
 
 
+<<<<<<< HEAD
+=======
+Rules useless in grammar
+
+   74 if_definition: T_IF L_BRACKET expression R_BRACKET compound_statement
+   75              | T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement
+
+
+>>>>>>> a1b13c7e0b2f579df6ae1c47040424a3d65644a6
 Grammar
 
     0 $accept: root $end

@@ -33,12 +33,12 @@
 class variable
 {
 private:
-  int variable_address;
+  std::string variable_value;
   type_declaration variable_type;
-
+  int variable_address;
 public:
-  variable(int _variable_address, type_declaration _variable_type)
-      : variable_address(_variable_address), variable_type(_variable_type) {}
+  variable(std::string _variable_value, type_declaration _variable_type, int _variable_address)
+      : variable_value(_variable_value), variable_type(_variable_type), variable_address(_variable_address) {}
 
   int fetch_variable_address()
   {
@@ -65,13 +65,12 @@ public:
   std::map<std::string, int> label_variables;
   std::map<std::string, std::string> label_declarations;
 
-  int new_variable(std::string variable_id, int variable_address)
+  void variable_val(std::string variable_id, auto variable_value)
   {
-    stack_pointer -= 4;
-    label_variables[variable_id];
-    label_variables.find(variable_id)->second = variable_address;
-    variable_address = stack_pointer;
-    return variable_address;
+    if(label_variables.count(variable_id)==0){
+      label_variables[variable_id];
+    };
+    label_variables.find(variable_id)->second = variable_value;
   }
 
   int get_variable_offset(std::string variable_id)

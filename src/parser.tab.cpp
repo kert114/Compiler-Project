@@ -611,14 +611,14 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    82,    82,    84,    85,    88,    89,    93,    94,    98,
-      99,   102,   103,   104,   110,   111,   114,   115,   118,   119,
-     120,   121,   124,   125,   130,   131,   132,   133,   134,   135,
-     136,   137,   138,   139,   140,   145,   146,   147,   150,   153,
-     154,   157,   158,   161,   162,   165,   166,   169,   170,   173,
-     174,   177,   178,   181,   182,   183,   186,   187,   188,   189,
-     190,   193,   194,   195,   198,   199,   200,   203,   204,   205,
-     206,   209,   210,   211,   212
+       0,    82,    82,    84,    85,    88,    89,    93,    94,   102,
+     103,   106,   107,   108,   114,   115,   118,   119,   122,   123,
+     124,   125,   128,   129,   134,   135,   136,   137,   138,   139,
+     140,   141,   142,   143,   144,   149,   150,   151,   154,   157,
+     158,   161,   162,   165,   166,   169,   170,   173,   174,   177,
+     178,   181,   182,   185,   186,   187,   190,   191,   192,   193,
+     194,   197,   198,   199,   202,   203,   204,   207,   208,   209,
+     210,   213,   214,   215,   216
 };
 #endif
 
@@ -1552,331 +1552,335 @@ yyreduce:
     break;
 
   case 9:
-#line 98 "src/parser.y"
+#line 102 "src/parser.y"
                             { std::cerr << "in first declarations\n"; (yyval.declaration_list_vector) = new std::vector<Declaration*>; (yyval.declaration_list_vector)->push_back((yyvsp[0].declaration_node)); }
 #line 1558 "src/parser.tab.cpp"
     break;
 
   case 10:
-#line 99 "src/parser.y"
+#line 103 "src/parser.y"
                                                       { std::cerr << "in subsequent declarations\n"; (yyval.declaration_list_vector)=(yyvsp[-1].declaration_list_vector); (yyval.declaration_list_vector)->push_back((yyvsp[0].declaration_node));}
 #line 1564 "src/parser.tab.cpp"
     break;
 
   case 11:
-#line 102 "src/parser.y"
+#line 106 "src/parser.y"
                                            { (yyval.declaration_node) = new Declaration(*(yyvsp[-1].string), NULL); }
 #line 1570 "src/parser.tab.cpp"
     break;
 
   case 12:
-#line 103 "src/parser.y"
+#line 107 "src/parser.y"
                                                                          { std::cerr << "in declaration\n";  (yyval.declaration_node) = new Declaration(*(yyvsp[-3].string), (yyvsp[-1].expr)); }
 #line 1576 "src/parser.tab.cpp"
     break;
 
   case 13:
-#line 104 "src/parser.y"
+#line 108 "src/parser.y"
                                                                    {  (yyval.declaration_node) = new Declaration(*(yyvsp[-3].string), (yyvsp[-1].expr)); }
 #line 1582 "src/parser.tab.cpp"
     break;
 
   case 14:
-#line 110 "src/parser.y"
+#line 114 "src/parser.y"
                        {(yyval.statement_list_vector) = new std::vector<Statement*>; (yyval.statement_list_vector)->push_back((yyvsp[0].statement_node)); }
 #line 1588 "src/parser.tab.cpp"
     break;
 
   case 15:
-#line 111 "src/parser.y"
+#line 115 "src/parser.y"
                                         { (yyval.statement_list_vector)=(yyvsp[-1].statement_list_vector); (yyval.statement_list_vector)->push_back((yyvsp[0].statement_node));}
 #line 1594 "src/parser.tab.cpp"
     break;
 
   case 16:
-#line 114 "src/parser.y"
+#line 118 "src/parser.y"
                                { std::cerr << "in compound_statement\n"; (yyval.statement_node) = (yyvsp[0].statement_node); }
 #line 1600 "src/parser.tab.cpp"
     break;
 
   case 17:
-#line 115 "src/parser.y"
+#line 119 "src/parser.y"
                              { std::cerr << "in return_statement\n"; (yyval.statement_node) = (yyvsp[0].statement_node); }
 #line 1606 "src/parser.tab.cpp"
     break;
 
   case 18:
-#line 118 "src/parser.y"
+#line 122 "src/parser.y"
                                          { (yyval.statement_node) = new compound_statement_declaration(NULL, NULL); }
 #line 1612 "src/parser.tab.cpp"
     break;
 
   case 19:
-#line 119 "src/parser.y"
+#line 123 "src/parser.y"
                                                                         { (yyval.statement_node) = new compound_statement_declaration(NULL, (yyvsp[-1].statement_list_vector)); }
 #line 1618 "src/parser.tab.cpp"
     break;
 
   case 20:
-#line 120 "src/parser.y"
+#line 124 "src/parser.y"
                                                                           { (yyval.statement_node) = new compound_statement_declaration((yyvsp[-1].declaration_list_vector), NULL); }
 #line 1624 "src/parser.tab.cpp"
     break;
 
   case 21:
-#line 121 "src/parser.y"
+#line 125 "src/parser.y"
                                                                                      { (yyval.statement_node) = new compound_statement_declaration((yyvsp[-2].declaration_list_vector), (yyvsp[-1].statement_list_vector)); }
 #line 1630 "src/parser.tab.cpp"
     break;
 
   case 22:
-#line 124 "src/parser.y"
+#line 128 "src/parser.y"
                                        { std::cerr << "in return empty\n"; (yyval.statement_node) = new return_statement_declaration(NULL); }
 #line 1636 "src/parser.tab.cpp"
     break;
 
   case 23:
-#line 125 "src/parser.y"
+#line 129 "src/parser.y"
                                                   { std::cerr << "in return expr\n"; (yyval.statement_node) = new return_statement_declaration((yyvsp[-1].expr)); }
 #line 1642 "src/parser.tab.cpp"
     break;
 
   case 35:
-#line 145 "src/parser.y"
+#line 149 "src/parser.y"
                                  {  std::cerr << "in primary_expr IDENTIFIER\n"; (yyval.expr) = new Variable(*(yyvsp[0].string)); }
 #line 1648 "src/parser.tab.cpp"
     break;
 
   case 36:
-#line 146 "src/parser.y"
+#line 150 "src/parser.y"
                                          { std::cerr << "in primary_expr INT_VAL\n"; (yyval.expr) = new Integer( (yyvsp[0].number) ); }
 #line 1654 "src/parser.tab.cpp"
     break;
 
   case 37:
-#line 147 "src/parser.y"
+#line 151 "src/parser.y"
                                                              { (yyval.expr) = (yyvsp[-1].expr); }
 #line 1660 "src/parser.tab.cpp"
     break;
 
   case 38:
-#line 150 "src/parser.y"
+#line 154 "src/parser.y"
                                         { (yyval.expr) = (yyvsp[0].expr); }
 #line 1666 "src/parser.tab.cpp"
     break;
 
   case 39:
-#line 153 "src/parser.y"
+#line 157 "src/parser.y"
                                                  { (yyval.expr) = (yyvsp[0].expr); }
 #line 1672 "src/parser.tab.cpp"
     break;
 
   case 40:
-#line 154 "src/parser.y"
+#line 158 "src/parser.y"
                                                                                          { (yyval.expr) = new binary_expression((yyvsp[-2].expr), *(yyvsp[-1].string), (yyvsp[0].expr), true); }
 #line 1678 "src/parser.tab.cpp"
     break;
 
   case 41:
-#line 157 "src/parser.y"
+#line 161 "src/parser.y"
                                                 { (yyval.expr) = (yyvsp[0].expr); }
 #line 1684 "src/parser.tab.cpp"
     break;
 
   case 42:
-#line 158 "src/parser.y"
+#line 162 "src/parser.y"
                                                                                                            { (yyval.expr) = new ternary_expression((yyvsp[-4].expr), (yyvsp[-2].expr), (yyvsp[0].expr)); }
 #line 1690 "src/parser.tab.cpp"
     break;
 
   case 43:
-#line 161 "src/parser.y"
+#line 165 "src/parser.y"
                                                { (yyval.expr) = (yyvsp[0].expr); }
 #line 1696 "src/parser.tab.cpp"
     break;
 
   case 44:
-#line 162 "src/parser.y"
+#line 166 "src/parser.y"
                                                                                         { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "||", (yyvsp[0].expr)); }
 #line 1702 "src/parser.tab.cpp"
     break;
 
   case 45:
-#line 165 "src/parser.y"
+#line 169 "src/parser.y"
                                                  { (yyval.expr) = (yyvsp[0].expr); }
 #line 1708 "src/parser.tab.cpp"
     break;
 
   case 46:
-#line 166 "src/parser.y"
+#line 170 "src/parser.y"
                                                                                              { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "&&", (yyvsp[0].expr)); }
 #line 1714 "src/parser.tab.cpp"
     break;
 
   case 47:
-#line 169 "src/parser.y"
+#line 173 "src/parser.y"
                                                   { (yyval.expr) = (yyvsp[0].expr); }
 #line 1720 "src/parser.tab.cpp"
     break;
 
   case 48:
-#line 170 "src/parser.y"
+#line 174 "src/parser.y"
                                                                                                                 { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "|", (yyvsp[0].expr)); }
 #line 1726 "src/parser.tab.cpp"
     break;
 
   case 49:
-#line 173 "src/parser.y"
+#line 177 "src/parser.y"
                                          { (yyval.expr) = (yyvsp[0].expr); }
 #line 1732 "src/parser.tab.cpp"
     break;
 
   case 50:
-#line 174 "src/parser.y"
+#line 178 "src/parser.y"
                                                                                              { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "^", (yyvsp[0].expr)); }
 #line 1738 "src/parser.tab.cpp"
     break;
 
   case 51:
-#line 177 "src/parser.y"
+#line 181 "src/parser.y"
                                       { (yyval.expr) = (yyvsp[0].expr); }
 #line 1744 "src/parser.tab.cpp"
     break;
 
   case 52:
-#line 178 "src/parser.y"
+#line 182 "src/parser.y"
                                                                    { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "&", (yyvsp[0].expr)); }
 #line 1750 "src/parser.tab.cpp"
     break;
 
   case 53:
-#line 181 "src/parser.y"
+#line 185 "src/parser.y"
                                             { (yyval.expr) = (yyvsp[0].expr); }
 #line 1756 "src/parser.tab.cpp"
     break;
 
   case 54:
+<<<<<<< HEAD
 #line 182 "src/parser.y"
+=======
+#line 186 "src/parser.y"
+>>>>>>> a1b13c7e0b2f579df6ae1c47040424a3d65644a6
                                                                                { std::cerr<<"equality_expr";(yyval.expr) = new binary_expression((yyvsp[-2].expr), "==", (yyvsp[0].expr)); }
 #line 1762 "src/parser.tab.cpp"
     break;
 
   case 55:
-#line 183 "src/parser.y"
+#line 187 "src/parser.y"
                                                                                 { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "!=", (yyvsp[0].expr)); }
 #line 1768 "src/parser.tab.cpp"
     break;
 
   case 56:
-#line 186 "src/parser.y"
+#line 190 "src/parser.y"
                                          { (yyval.expr) = (yyvsp[0].expr); }
 #line 1774 "src/parser.tab.cpp"
     break;
 
   case 57:
-#line 187 "src/parser.y"
+#line 191 "src/parser.y"
                                                                          { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "<", (yyvsp[0].expr)); }
 #line 1780 "src/parser.tab.cpp"
     break;
 
   case 58:
-#line 188 "src/parser.y"
+#line 192 "src/parser.y"
                                                                             { (yyval.expr) = new binary_expression((yyvsp[-2].expr), ">", (yyvsp[0].expr)); }
 #line 1786 "src/parser.tab.cpp"
     break;
 
   case 59:
-#line 189 "src/parser.y"
+#line 193 "src/parser.y"
                                                                              { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "<=", (yyvsp[0].expr)); }
 #line 1792 "src/parser.tab.cpp"
     break;
 
   case 60:
-#line 190 "src/parser.y"
+#line 194 "src/parser.y"
                                                                                 { (yyval.expr) = new binary_expression((yyvsp[-2].expr), ">=", (yyvsp[0].expr)); }
 #line 1798 "src/parser.tab.cpp"
     break;
 
   case 61:
-#line 193 "src/parser.y"
+#line 197 "src/parser.y"
                                        { (yyval.expr) = (yyvsp[0].expr); }
 #line 1804 "src/parser.tab.cpp"
     break;
 
   case 62:
-#line 194 "src/parser.y"
+#line 198 "src/parser.y"
                                                                                     { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "<<", (yyvsp[0].expr)); }
 #line 1810 "src/parser.tab.cpp"
     break;
 
   case 63:
-#line 195 "src/parser.y"
+#line 199 "src/parser.y"
                                                                                      { (yyval.expr) = new binary_expression((yyvsp[-2].expr), ">>", (yyvsp[0].expr)); }
 #line 1816 "src/parser.tab.cpp"
     break;
 
   case 64:
-#line 198 "src/parser.y"
+#line 202 "src/parser.y"
                                                   { (yyval.expr) = (yyvsp[0].expr); }
 #line 1822 "src/parser.tab.cpp"
     break;
 
   case 65:
-#line 199 "src/parser.y"
+#line 203 "src/parser.y"
                                                                                { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "+", (yyvsp[0].expr)); }
 #line 1828 "src/parser.tab.cpp"
     break;
 
   case 66:
-#line 200 "src/parser.y"
+#line 204 "src/parser.y"
                                                                                 { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "-", (yyvsp[0].expr)); }
 #line 1834 "src/parser.tab.cpp"
     break;
 
   case 67:
-#line 203 "src/parser.y"
+#line 207 "src/parser.y"
                                              { (yyval.expr) = (yyvsp[0].expr); }
 #line 1840 "src/parser.tab.cpp"
     break;
 
   case 68:
-#line 204 "src/parser.y"
+#line 208 "src/parser.y"
                                                                                { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "*", (yyvsp[0].expr)); }
 #line 1846 "src/parser.tab.cpp"
     break;
 
   case 69:
-#line 205 "src/parser.y"
+#line 209 "src/parser.y"
                                                                                { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "/", (yyvsp[0].expr)); }
 #line 1852 "src/parser.tab.cpp"
     break;
 
   case 70:
-#line 206 "src/parser.y"
+#line 210 "src/parser.y"
                                                                                { (yyval.expr) = new binary_expression((yyvsp[-2].expr), "%", (yyvsp[0].expr)); }
 #line 1858 "src/parser.tab.cpp"
     break;
 
   case 71:
-#line 209 "src/parser.y"
+#line 213 "src/parser.y"
                                          { (yyval.expr) = (yyvsp[0].expr); }
 #line 1864 "src/parser.tab.cpp"
     break;
 
   case 72:
-#line 210 "src/parser.y"
+#line 214 "src/parser.y"
                                                                         { (yyval.expr) = new unary_expression((yyvsp[0].expr), "++"); }
 #line 1870 "src/parser.tab.cpp"
     break;
 
   case 73:
-#line 211 "src/parser.y"
+#line 215 "src/parser.y"
                                                                         { (yyval.expr) = new unary_expression((yyvsp[0].expr), "--"); }
 #line 1876 "src/parser.tab.cpp"
     break;
 
   case 74:
-#line 212 "src/parser.y"
+#line 216 "src/parser.y"
                                                                     { (yyval.expr) = new unary_expression((yyvsp[0].expr), "sizeof"); }
 #line 1882 "src/parser.tab.cpp"
     break;
@@ -2114,7 +2118,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 215 "src/parser.y"
+#line 219 "src/parser.y"
 
 
 const std::vector<Expression*>* g_root; // Definition of variable (to match declaration earlier)

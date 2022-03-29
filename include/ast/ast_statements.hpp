@@ -90,7 +90,6 @@ public:
         {
             context.allocate_stack();
             expression->translate(context);
-            // std::cout << "lw $v0, 8($sp)"<<std::endl;
             context.deallocate_stack();
         }
     }
