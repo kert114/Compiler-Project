@@ -16,7 +16,7 @@
 #include <cstdlib>
 #include <typeinfo>
 
-extern Node *parseAST();
+const Node *parseAST(std::istream &src);
 FILE *yyin;
 
 #endif

@@ -2024,7 +2024,7 @@ yyreturn:
 
 const Node *root; // Definition of variable (to match declaration earlier)
 
-const Node *parse()
+const Node *parseAST()
 {
   root=0;
   yyparse();
