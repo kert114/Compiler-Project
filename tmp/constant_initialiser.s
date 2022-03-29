@@ -8,7 +8,7 @@ li $2, 12345
 sw $2, 0($sp)
 sw $v0, 8($fp)
 addiu $sp, $sp,  8
-lw $2,0($fp)
+lw $2,8($fp)
 move $sp, $fp
 lw $fp, 4($sp)
 addiu $sp, $sp, 128

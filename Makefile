@@ -1,4 +1,4 @@
-CPPFLAGS += -std=c++17 -W -Wall -g -Wno-unused-parameter
+CPPFLAGS += -std=c++17 -W -Wall -g -Wno-unused-parameter 
 CPPFLAGS += -I include
 
 all: bin/compiler bin/c_compiler

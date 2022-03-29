@@ -14,22 +14,20 @@ private:
     ExpressionPtr expression;
 
 public:
-    Declaration( std::string _id, ExpressionPtr _expression)
+    Declaration(std::string _id, ExpressionPtr _expression)
         : id(_id), expression(_expression) {}
 
     virtual void translate(Context &context)
     {
         // std::cout << "#placeholder for Declaration" << std::endl;
-        std::cout << "addiu $sp, $sp, -80" << std::endl;
-        expression->translate(context);
-        context.variable_val(id, expression->translate(context));
-        // std::cout<<context.get_variable_offset(id)<<std::endl;
-        std::cout << "sw $v0, 8($fp)"<< std::endl;
-        std::cout << "addiu $sp, $sp,  80" << std::endl;
+        std::cout << "addiu $sp, $sp, -8" << std::endl;
+        if (expression != NULL)
+            expression->translate(context);
+        std::cout << "sw $v0, 8($fp)" << std::endl;
+        context.label_variables[id] = 8;
+        std::cout << "addiu $sp, $sp,  8" << std::endl;
     }
-
 };
-
 
 class Statement
     : public Expression
@@ -37,7 +35,7 @@ class Statement
 public:
     Statement() {}
     ~Statement() {}
-    virtual void translate(Context &context) {};
+    virtual void translate(Context &context){};
 };
 
 class compound_statement_declaration
@@ -48,8 +46,9 @@ private:
     std::vector<Statement *> *statements;
 
 public:
-    compound_statement_declaration(std::vector<Declaration *> *_declarations, std::vector<Statement *> *_statements) : declarations(_declarations), statements(_statements)  {}
-    ~compound_statement_declaration(){
+    compound_statement_declaration(std::vector<Declaration *> *_declarations, std::vector<Statement *> *_statements) : declarations(_declarations), statements(_statements) {}
+    ~compound_statement_declaration()
+    {
         delete statements;
         delete declarations;
     }
@@ -80,17 +79,17 @@ private:
 
 public:
     return_statement_declaration(Expression *_expression) : expression(_expression) {}
-    ~return_statement_declaration(){
+    ~return_statement_declaration()
+    {
         delete expression;
     }
 
-    void translate(Context& context)
+    void translate(Context &context)
     {
         if (expression != NULL)
         {
             context.allocate_stack();
             expression->translate(context);
-            // std::cout << "lw $v0, 8($sp)"<<std::endl;
             context.deallocate_stack();
         }
     }

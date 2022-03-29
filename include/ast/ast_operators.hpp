@@ -132,8 +132,8 @@ public:
             right->translate(context);
             std::cout << "move $t1, $v0" << std::endl;
             std::cout << "xor $v0, $t0, $t1" << std::endl;
-            std::cout << "sltu $v0 $v0 1" << std::endl;
-            std::cout << "andi $v0 $v0 0x00ff" << std::endl;
+            std::cout << "sltu $v0, $v0, 1" << std::endl;
+            std::cout << "andi $v0, $v0, 0x00ff" << std::endl;
         }
         if (op == "<")
         {
@@ -143,14 +143,17 @@ public:
             std::cout << "move $t1, $v0" << std::endl;
             std::cout << "slt $v0, $t0, $t1" << std::endl;
         }
-        if (op == "<="){
+        if (op == "<=")
+        {
             left->translate(context);
             std::cout << "move $t0, $v0" << std::endl;
             right->translate(context);
-            std::cout << "move $t1, $v0"<< std::endl;
-            std::cout << "slt $v0, $t0, $t1"<< std::endl;
-            std::cout << "xori $v0, $v0, 0x1"<< std::endl;
-            std::cout << "andi $v0, $v0, 0x00ff"<< std::endl;
+            std::cout << "move $t1, $v0" << std::endl;
+            std::cout << "move $v0, $t0" << std::endl;
+
+            std::cout << "slt $v0, $v0, $t1" << std::endl;
+            std::cout << "xori $v0, $v0, 0x1" << std::endl;
+            std::cout << "andi $v0, $v0, 0x00ff" << std::endl;
         }
         if (op == ">")
         {

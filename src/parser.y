@@ -59,7 +59,7 @@
 /*----------------type--------------*/
 
 %type <expr_list_vector> translation_unit
-%type <expr> external_declaration function_definition
+%type <expr> external_declaration function_definition if_definition
 %type <declaration_node> declaration 
 %type <statement_node> statement return_statement compound_statement
 %type <declaration_list_vector> declarations
@@ -93,6 +93,10 @@ external_declaration	: function_definition { $$ = $1; }	//functions
 function_definition : T_INT IDENTIFIER L_BRACKET R_BRACKET compound_statement { std::cerr << "in func def\n";$$ = new function_declaration(*$2, $5); } 
                     | T_INT IDENTIFIER L_BRACKET T_INT IDENTIFIER COMMA T_INT IDENTIFIER R_BRACKET compound_statement { $$ = new function_declaration(*$2, $10, *$5, *$8 ); }
 					; 
+
+if_definition : T_IF L_BRACKET expression R_BRACKET compound_statement { $$ = new if_declaration($3, $5); }
+			  | T_IF L_BRACKET expression R_BRACKET compound_statement T_ELSE compound_statement { $$ = new if_declaration($3, $5, $7)}
+
 
 // Declarations
 declarations  : declaration { std::cerr << "in first declarations\n"; $$ = new std::vector<Declaration*>; $$->push_back($1); }
@@ -179,7 +183,7 @@ and_expression  : equality_expression { $$ = $1; }
 	            ;
 
 equality_expression : relational_expression { $$ = $1; }
-	                  | equality_expression EQUAL relational_expression { $$ = new binary_expression($1, "==", $3); }
+	                  | equality_expression EQUAL_TO relational_expression { std::cerr<<"equality_expr";$$ = new binary_expression($1, "==", $3); }
 	                  | equality_expression NOT_EQUAL relational_expression { $$ = new binary_expression($1, "!=", $3); }
 	                  ;
 
