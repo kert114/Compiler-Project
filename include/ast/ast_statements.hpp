@@ -20,10 +20,11 @@ public:
     virtual void translate(Context &context)
     {
         // std::cout << "#placeholder for Declaration" << std::endl;
-        std::cout << "addiu $sp, $sp, -8" << std::endl;
+        std::cout << "addiu $sp, $sp, -80" << std::endl;
         expression->translate(context);
+        // std::cout<<context.get_variable_offset(id)<<std::endl;
         std::cout << "sw $v0, 8($fp)"<< std::endl;
-        std::cout << "addiu $sp, $sp,  8" << std::endl;
+        std::cout << "addiu $sp, $sp,  80" << std::endl;
     }
 
 };
@@ -88,6 +89,7 @@ public:
         {
             context.allocate_stack();
             expression->translate(context);
+            // std::cout << "lw $v0, 8($sp)"<<std::endl;
             context.deallocate_stack();
         }
     }

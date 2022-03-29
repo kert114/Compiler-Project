@@ -102,7 +102,7 @@ public:
 
   void store_register(std::string register_name, int offset)
   {
-    std::cout << "sw " << register_name << ", " << offset << "($30)" << std::endl;
+    std::cout << "sw " << register_name << ", " << offset << "($sp)" << std::endl;
   }
 };
 
